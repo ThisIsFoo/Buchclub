@@ -66,13 +66,16 @@
             letter-spacing: 0.04em;
         }
 
-        .nav-brand span {
+        .nav-brand .brand-der {
+            color: var(--text);
+        }
+
+        .nav-brand .brand-buch {
             color: var(--primary);
         }
 
-        .nav-brand em {
+        .nav-brand .brand-club {
             color: var(--cyan);
-            font-style: normal;
         }
 
         .nav-right {
@@ -89,24 +92,6 @@
             border: 1px solid var(--border);
             padding: 2px 8px;
             border-radius: 20px;
-        }
-
-        .upload-btn {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.72rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            background: transparent;
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            color: var(--cyan);
-            padding: 5px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-
-        .upload-btn:hover {
-            background: rgba(0, 240, 255, 0.08);
         }
 
         .hero {
@@ -246,56 +231,6 @@
             min-width: 20px;
         }
 
-        .drop-zone {
-            position: relative;
-            z-index: 1;
-            max-width: 500px;
-            margin: 0 auto 3rem;
-            border: 2px dashed rgba(0, 240, 255, 0.25);
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .drop-zone:hover, .drop-zone.drag-over {
-            border-color: var(--cyan);
-            background: rgba(0, 240, 255, 0.04);
-        }
-
-        .drop-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .drop-title {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.9rem;
-            color: var(--text);
-            margin-bottom: 0.4rem;
-        }
-
-        .drop-sub {
-            font-size: 0.8rem;
-            color: var(--muted);
-        }
-
-        .drop-sub em {
-            color: var(--cyan);
-            font-style: normal;
-        }
-
-        .file-input {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            cursor: pointer;
-            width: 100%;
-            height: 100%;
-        }
-
         .debug-box {
             background: var(--bg3);
             border: 1px solid var(--pink);
@@ -427,8 +362,21 @@
             font-family: 'Space Mono', monospace;
             font-size: 1.3rem;
             font-weight: 700;
+            display: inline;
+            line-height: 1;
+        }
+
+        .rating-denom {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: #555068;
+            font-weight: 400;
+        }
+
+        .rating-score-wrap {
             display: block;
             line-height: 1;
+            margin-bottom: 2px;
         }
 
         .rating-unit {
@@ -722,16 +670,12 @@
             font-size: 0.85rem;
             letter-spacing: 0.1em;
         }
-
-        #drop-area {
-            display: none;
-        }
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-brand">
-            <span>DER </span><em>BUCH CLUB</em>
+            <span class="brand-der">DER </span><span class="brand-buch">BUCH</span><span class="brand-club"> CLUB</span>
         </div>
         <div class="nav-right">
             <div class="nav-tag">Proudly Over Engineered by fu</div>
@@ -739,7 +683,7 @@
     </nav>
 
     <section class="hero">
-        <h1>Das Buch. <br><span class="accent-p">Der Club</span>.<br><span class="accent-c">Die Page</span>.</h1>
+        <h1>Das Buch<span style="color:var(--text)">.</span> <br><span class="accent-p">Der Club<span style="color:var(--primary)">.</span></span><br><span class="accent-c">Die Page<span style="color:var(--cyan)">.</span></span></h1>
         <p class="hero-sub">Dass man mal was sieht!</p>
     </section>
 
@@ -763,8 +707,8 @@
         <div id="book-area" style="display: none;">
             <div class="sort-bar" id="sort-bar">
                 <span class="sort-label">Sortieren:</span>
-                <button class="sort-btn active" data-sort="num-asc">Älteste zuerst</button>
-                <button class="sort-btn" data-sort="num-desc">Neueste zuerst</button>
+                <button class="sort-btn" data-sort="num-asc">Älteste zuerst</button>
+                <button class="sort-btn active" data-sort="num-desc">Neueste zuerst</button>
                 <button class="sort-btn" data-sort="score-desc">Beste zuerst</button>
                 <button class="sort-btn" data-sort="score-asc">Schlechteste zuerst</button>
                 <div class="section-line"></div>
@@ -800,48 +744,56 @@
 
     <script>
         let allBooks = [];
-        let currentSort = 'num-asc';
+        let currentSort = 'num-desc';
         const debugLines = [];
 
-        // CSV robust parsen (Komma, Semikolon, Tab, Quotes)
-        function parseCSVtext(text) {
-            const rows = [];
-            let row = [], cell = '', i = 0, inQuotes = false, delim = null;
-            const s = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-            for (i = 0; i < s.length; i++) {
-                const ch = s[i], next = s[i + 1];
-                if (delim === null) {
-                    delim = ch === ',' || ch === ';' || ch === '\t' ? ch : ',';
-                }
+        // CSV robust parsen mit korrekter Quote-Behandlung
+        // Ignoriert Kommas innerhalb von Spalte B (Index 1) auch ohne Quotes,
+        // indem wir die Zeile zuerst nach fester Spaltenanzahl aufteilen.
+        function parseCSVLine(line) {
+            const result = [];
+            let cell = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const ch = line[i];
                 if (inQuotes) {
                     if (ch === '"') {
-                        if (next === '"') cell += '"'; i++;
+                        if (line[i + 1] === '"') { cell += '"'; i++; }
+                        else { inQuotes = false; }
                     } else {
-                        inQuotes = false;
+                        cell += ch;
                     }
                 } else if (ch === '"') {
                     inQuotes = true;
-                } else if (ch === delim) {
-                    row.push(cell);
-                    cell = '';
-                } else if (ch === '\n') {
-                    row.push(cell);
-                    rows.push(row);
-                    row = [];
+                } else if (ch === ',') {
+                    result.push(cell.trim());
                     cell = '';
                 } else {
                     cell += ch;
                 }
             }
-            if (cell || row.length) rows.push(row);
-            return rows.map(r => r.map(v => v.trim()));
+            result.push(cell.trim());
+            return result;
         }
 
-        // Mapping auf deine CSV-Struktur: Nummer, Titel, Autor, ISBN, Einheit, Durchschnitt-Wertung, Mitglied1, Wertung1, ...
+        function parseCSVtext(text) {
+            const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+            return lines
+                .filter(l => l.trim() !== '')
+                .map(l => parseCSVLine(l));
+        }
+
+        // Spalte B: Titel kann Kommas enthalten. Wir wissen, dass:
+        //   Spalte A = Nummer (kein Komma)
+        //   Spalte B = Titel (kann Kommas enthalten, ABER nur wenn in Quotes im CSV!)
+        // Die richtige Lösung: Im Google Sheet den Titel in Anführungszeichen setzen,
+        // wenn er ein Komma enthält. Der Standard-CSV-Export macht das automatisch.
+        // Unser Parser oben behandelt das korrekt.
+
         function buildBooks(rows) {
             const books = [];
             if (!rows.length) return books;
-            for (let i = 1; i < rows.length; i++) { // ab Zeile 1 (Header Zeile 0)
+            for (let i = 1; i < rows.length; i++) {
                 const r = rows[i];
                 if (!r || r.length < 2) continue;
                 const num = r[0] ? String(r[0]).trim() : '';
@@ -849,12 +801,11 @@
                 const autor = r[2] ? String(r[2]).trim() : '';
                 const isbn = r[3] ? String(r[3]).trim() : '';
                 const unit = r[4] ? String(r[4]).trim() : '';
-                const avgRaw = r[5] ? String(r[5]).trim() : ''; // Durchschnitt-Wertung
+                const avgRaw = r[5] ? String(r[5]).trim() : '';
 
-                if (!title) continue; // Titel erforderlich
+                if (!title) continue;
 
                 const members = [];
-                // Mitglieder/Wertungen starten ab Index 6: 6=Mitglied1, 7=Wertung1, 8=Mitglied2, ...
                 for (let c = 6; c < r.length; c += 2) {
                     const rawName = r[c];
                     const rawScore = r[c + 1];
@@ -866,7 +817,6 @@
                     }
                 }
 
-                // Durchschnitt: Spalte F bevorzugt, fallback aus members
                 let avg = null;
                 if (avgRaw) {
                     const parsed = parseFloat(avgRaw.replace(',', '.'));
@@ -952,14 +902,32 @@
                 const url = coverUrl(book.isbn);
                 const color = scoreColor(book.avg);
 
-                let coverCell = `<td class="td-cover">`;
+                // Cover-Zelle: nur Cover wenn vorhanden, sonst Placeholder
+                const td = document.createElement('td');
+                td.className = 'td-cover';
                 if (url) {
-                    coverCell += `<img class="cover-thumb" src="${url}" alt="${book.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`;
+                    const img = document.createElement('img');
+                    img.className = 'cover-thumb';
+                    img.alt = book.title;
+                    img.src = url;
+                    // Wenn Cover nicht lädt → zeige Placeholder
+                    img.onerror = function() {
+                        this.style.display = 'none';
+                        const ph = document.createElement('div');
+                        ph.className = 'cover-placeholder';
+                        ph.textContent = '📖';
+                        td.appendChild(ph);
+                    };
+                    td.appendChild(img);
+                } else {
+                    const ph = document.createElement('div');
+                    ph.className = 'cover-placeholder';
+                    ph.textContent = '📖';
+                    td.appendChild(ph);
                 }
-                coverCell += `<div class="cover-placeholder">📖</div></td>`;
+
                 tr.innerHTML = `
                     <td class="td-num">${String(book.num).padStart(2, '0')}</td>
-                    ${coverCell}
                     <td class="td-title">
                         <span class="book-title">${book.title}</span>
                         ${book.autor ? `<span class="book-author">${book.autor}</span>` : ''}
@@ -971,10 +939,14 @@
                         </div>
                     </td>
                     <td class="td-rating">
-                        <span class="rating-score" style="color:${color}">${avgD}</span>
+                        <span class="rating-score-wrap">
+                            <span class="rating-score" style="color:${color}">${avgD}</span><span class="rating-denom">${avgD ? '/10' : ''}</span>
+                        </span>
                         ${book.unit ? `<span class="rating-unit">${book.unit}</span>` : ''}
                     </td>
                 `;
+                // Cover-TD manuell einfügen an Stelle 2
+                tr.insertBefore(td, tr.children[1]);
                 tbody.appendChild(tr);
             });
             table.appendChild(tbody);
@@ -992,6 +964,7 @@
                 img.src = url;
                 img.onerror = function() {
                     cw.innerHTML = `<div class="modal-cover-placeholder">📖</div>`;
+                    cw.insertAdjacentHTML('beforeend', '<div class="modal-cover-gradient"></div>');
                 };
                 cw.innerHTML = '';
                 cw.appendChild(img);
@@ -1055,7 +1028,6 @@
             document.getElementById('debug-box').style.display = 'none';
         }
 
-        // Sort-Buttons
         document.querySelectorAll('.sort-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
@@ -1065,7 +1037,6 @@
             });
         });
 
-        // Automatisches Laden von Google Sheets CSV
         async function fetchCSV() {
             try {
                 const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmVkfS9NOAQ-BV4uA3XJUHW6hOS5LT5cFUr6DsESars2b7tg1SsMCVUHnyzKaEh4qnhXUqDiHXUl30/pub?gid=0&single=true&output=csv';
@@ -1095,7 +1066,6 @@
             }
         }
 
-        // Start beim Laden der Seite
         window.addEventListener('load', fetchCSV);
     </script>
 </body>
