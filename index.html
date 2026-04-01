@@ -55,22 +55,12 @@
             height: 56px;
         }
 
-        .nav-brand {
-            font-family: 'Space Mono', monospace;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-        }
-
+        .nav-brand { font-family: 'Space Mono', monospace; font-size: 1rem; font-weight: 700; letter-spacing: 0.04em; }
         .nav-brand .brand-der  { color: var(--text); }
         .nav-brand .brand-buch { color: var(--primary); }
         .nav-brand .brand-club { color: var(--cyan); }
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
+        .nav-right { display: flex; align-items: center; gap: 0.8rem; }
 
         .nav-tag {
             font-size: 0.65rem;
@@ -108,7 +98,6 @@
                 0 0 80px rgba(189, 0, 255, 0.06);
         }
 
-        /* animated corner glow */
         .now-reading-inner::before {
             content: '';
             position: absolute;
@@ -142,9 +131,11 @@
             height: 160px;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow:
-                0 8px 32px rgba(0,0,0,0.5),
-                0 0 0 1px rgba(189,0,255,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(189,0,255,0.3);
+            background: var(--bg4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .now-cover-wrap img {
@@ -154,20 +145,9 @@
             display: block;
         }
 
-        .now-cover-placeholder {
-            width: 100%;
-            height: 100%;
-            background: var(--bg4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-        }
+        .now-cover-placeholder { font-size: 3rem; }
 
-        .now-info {
-            flex: 1;
-            min-width: 0;
-        }
+        .now-info { flex: 1; min-width: 0; }
 
         .now-label {
             font-size: 0.65rem;
@@ -187,11 +167,7 @@
             margin-bottom: 0.4rem;
         }
 
-        .now-author {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.2rem;
-        }
+        .now-author { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.2rem; }
 
         .now-num {
             font-family: 'Space Mono', monospace;
@@ -239,12 +215,7 @@
             max-width: 700px;
         }
 
-        .stat {
-            flex: 1;
-            background: var(--bg2);
-            padding: 1.2rem 1rem;
-            text-align: center;
-        }
+        .stat { flex: 1; background: var(--bg2); padding: 1.2rem 1rem; text-align: center; }
 
         .stat-num {
             font-family: 'Space Mono', monospace;
@@ -256,12 +227,7 @@
             margin-bottom: 0.3rem;
         }
 
-        .stat-label {
-            font-size: 0.68rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--muted);
-        }
+        .stat-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
 
         main {
             position: relative;
@@ -271,21 +237,9 @@
             padding: 0 1.5rem 4rem;
         }
 
-        .sort-bar {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
+        .sort-bar { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
 
-        .sort-label {
-            font-size: 0.68rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-right: 0.3rem;
-        }
+        .sort-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-right: 0.3rem; }
 
         .sort-btn {
             font-family: 'Space Grotesk', sans-serif;
@@ -303,12 +257,7 @@
         .sort-btn:hover { border-color: var(--primary); color: var(--text); }
         .sort-btn.active { border-color: var(--cyan); color: var(--cyan); background: rgba(0,240,255,0.06); }
 
-        .section-line {
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
-            min-width: 20px;
-        }
+        .section-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border) 0%, transparent 100%); min-width: 20px; }
 
         .debug-box {
             background: var(--bg3);
@@ -323,18 +272,8 @@
         }
 
         /* ── TABLE ── */
-        .book-table {
-            width: 100%;
-            border-collapse: collapse;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .book-table thead tr {
-            background: var(--bg3);
-            border-bottom: 1px solid var(--border);
-        }
+        .book-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .book-table thead tr { background: var(--bg3); border-bottom: 1px solid var(--border); }
 
         .book-table th {
             padding: 0.75rem 1rem;
@@ -346,42 +285,17 @@
             text-align: left;
         }
 
-        .book-table tbody tr {
-            border-bottom: 1px solid rgba(189, 0, 255, 0.07);
-            cursor: pointer;
-            transition: background 0.15s ease;
-        }
-
+        .book-table tbody tr { border-bottom: 1px solid rgba(189,0,255,0.07); cursor: pointer; transition: background 0.15s ease; }
         .book-table tbody tr:last-child { border-bottom: none; }
         .book-table tbody tr:nth-child(odd)  { background: var(--bg2); }
         .book-table tbody tr:nth-child(even) { background: var(--bg3); }
         .book-table tbody tr:hover { background: var(--bg4); }
+        .book-table td { padding: 0.9rem 1rem; vertical-align: middle; }
 
-        .book-table td {
-            padding: 0.9rem 1rem;
-            vertical-align: middle;
-        }
-
-        .td-num {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--primary);
-            opacity: 0.7;
-            white-space: nowrap;
-            width: 56px;
-        }
-
+        .td-num { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--primary); opacity: 0.7; white-space: nowrap; width: 56px; }
         .td-cover { width: 44px; padding-right: 0 !important; }
 
-        .cover-thumb {
-            width: 36px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 3px;
-            display: block;
-            background: var(--bg4);
-            border: 1px solid var(--border);
-        }
+        .cover-thumb { width: 36px; height: 50px; object-fit: cover; border-radius: 3px; display: block; background: var(--bg4); border: 1px solid var(--border); }
 
         .cover-placeholder {
             width: 36px;
@@ -396,33 +310,10 @@
             color: var(--muted);
         }
 
-        .td-title .book-title {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--text);
-            display: block;
-            line-height: 1.3;
-        }
-
-        .td-title .book-author {
-            font-size: 0.78rem;
-            color: var(--muted);
-            margin-top: 2px;
-            display: block;
-        }
-
-        .td-isbn {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--muted);
-            white-space: nowrap;
-        }
-
-        .td-rating {
-            text-align: right !important;
-            white-space: nowrap;
-            min-width: 90px;
-        }
+        .td-title .book-title { font-weight: 600; font-size: 0.95rem; color: var(--text); display: block; line-height: 1.3; }
+        .td-title .book-author { font-size: 0.78rem; color: var(--muted); margin-top: 2px; display: block; }
+        .td-isbn { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); white-space: nowrap; }
+        .td-rating { text-align: right !important; white-space: nowrap; min-width: 90px; }
 
         .rating-score { font-family: 'Space Mono', monospace; font-size: 1.3rem; font-weight: 700; display: inline; line-height: 1; }
         .rating-denom { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: #555068; font-weight: 400; }
@@ -443,19 +334,8 @@
         }
 
         .td-bar { width: 120px; padding-left: 0.5rem !important; }
-
-        .rating-bar-bg {
-            height: 3px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .rating-bar-fill {
-            height: 100%;
-            border-radius: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--cyan));
-        }
+        .rating-bar-bg { height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+        .rating-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--primary), var(--cyan)); }
 
         /* ── MODAL ── */
         .modal-backdrop {
@@ -507,39 +387,13 @@
 
         .modal-close:hover { border-color: var(--pink); color: var(--pink); }
 
-        .modal-cover-wrap {
-            position: relative;
-            height: 200px;
-            overflow: hidden;
-            border-radius: 16px 16px 0 0;
-        }
-
-        .modal-cover-img { width: 100%; height: 100%; object-fit: cover; }
-
-        .modal-cover-gradient {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(0deg, var(--bg2) 0%, transparent 60%);
-        }
-
-        .modal-cover-placeholder {
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg, var(--bg3), var(--bg4));
-            display: flex; align-items: center; justify-content: center;
-            font-size: 3rem;
-        }
+        .modal-cover-wrap { position: relative; height: 200px; overflow: hidden; border-radius: 16px 16px 0 0; background: var(--bg4); display: flex; align-items: center; justify-content: center; }
+        .modal-cover-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .modal-cover-gradient { position: absolute; inset: 0; background: linear-gradient(0deg, var(--bg2) 0%, transparent 60%); }
+        .modal-cover-placeholder { font-size: 3rem; }
 
         .modal-body { padding: 1.5rem 1.8rem 2rem; }
-
-        .modal-num {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 0.25em;
-            color: var(--primary);
-            text-transform: uppercase;
-            margin-bottom: 0.4rem;
-        }
-
+        .modal-num { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.25em; color: var(--primary); text-transform: uppercase; margin-bottom: 0.4rem; }
         .modal-title { font-family: 'Space Mono', monospace; font-size: 1.4rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.3rem; }
         .modal-author { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.2rem; }
 
@@ -558,23 +412,9 @@
         .modal-avg-of  { font-size: 0.9rem; color: var(--muted); }
         .modal-avg-unit { font-size: 0.8rem; color: var(--primary); margin-left: auto; text-align: right; }
 
-        .modal-members-label {
-            font-size: 0.65rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 0.8rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
+        .modal-members-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
 
-        .member-row {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 0.6rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
+        .member-row { display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .member-row:last-child { border-bottom: none; }
 
         .member-avatar {
@@ -590,31 +430,14 @@
         }
 
         .member-name { width: 70px; font-size: 0.85rem; color: var(--text); flex-shrink: 0; }
-
         .member-bar-bg { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
         .member-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--primary), var(--cyan)); }
-
         .member-score { font-family: 'Space Mono', monospace; font-size: 1rem; color: var(--cyan); width: 36px; text-align: right; font-weight: 700; }
 
-        footer {
-            position: relative; z-index: 1;
-            text-align: center;
-            padding: 2rem;
-            border-top: 1px solid var(--border);
-            font-size: 0.75rem;
-            color: var(--muted);
-        }
-
+        footer { position: relative; z-index: 1; text-align: center; padding: 2rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
         footer a { color: var(--primary); text-decoration: none; }
 
-        .loading {
-            text-align: center;
-            padding: 3rem 2rem;
-            color: var(--muted);
-            font-family: 'Space Mono', monospace;
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-        }
+        .loading { text-align: center; padding: 3rem 2rem; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 0.85rem; letter-spacing: 0.1em; }
 
         @media (max-width: 700px) {
             .td-isbn, .td-bar { display: none; }
@@ -637,12 +460,11 @@
     </div>
 </nav>
 
-<!-- Now Reading Hero – wird per JS befüllt -->
 <section class="now-reading" id="now-reading" style="display:none;">
     <div class="now-reading-inner">
         <div class="now-badge">◆ Now Reading</div>
         <div class="now-cover-wrap" id="now-cover-wrap">
-            <div class="now-cover-placeholder">📖</div>
+            <span class="now-cover-placeholder">📖</span>
         </div>
         <div class="now-info">
             <div class="now-label">Aktuelles Buch</div>
@@ -675,7 +497,7 @@
 <main>
     <div id="loading" class="loading">Lade Buchclub-Daten aus Google Sheets...</div>
     <div id="book-area" style="display:none;">
-        <div class="sort-bar" id="sort-bar">
+        <div class="sort-bar">
             <span class="sort-label">Sortieren:</span>
             <button class="sort-btn" data-sort="num-asc">Älteste zuerst</button>
             <button class="sort-btn active" data-sort="num-desc">Neueste zuerst</button>
@@ -748,16 +570,16 @@
             .map(l => parseCSVLine(l));
     }
 
-    // ── Sheet-Struktur (nach Anpassung) ──
+    // ── Sheet-Struktur ──
     // A = Nr
-    // B = Aktuell (x oder leer)
+    // B = Aktuell (beliebiger Wert = aktuell, leer = nicht aktuell)
     // C = Titel
     // D = Autor
     // E = Image-URL (bevorzugt)
     // F = ISBN (Fallback OpenLibrary)
     // G = Einheit
     // H = Ø Score
-    // I+ = Mitglied1, Wertung1, Mitglied2, Wertung2, ...
+    // I, J, K, L ... = Mitglied1, Wertung1, Mitglied2, Wertung2, ...
 
     function buildBooks(rows) {
         const books = [];
@@ -767,7 +589,7 @@
             if (!r || r.length < 3) continue;
 
             const num       = r[0] ? String(r[0]).trim() : '';
-            const isCurrent = r[1] ? String(r[1]).trim() !== '' : false;
+            const isCurrent = !!(r[1] && String(r[1]).trim() !== '');
             const title     = r[2] ? String(r[2]).trim() : '';
             const autor     = r[3] ? String(r[3]).trim() : '';
             const imageUrl  = r[4] ? String(r[4]).trim() : '';
@@ -796,28 +618,15 @@
                 avg = Math.round(members.reduce((s, m) => s + m.score, 0) / members.length * 10) / 10;
             }
 
-            books.push({
-                num: parseInt(num) || i,
-                numStr: num || String(i),
-                isCurrent,
-                title,
-                autor,
-                imageUrl,
-                isbn: isbn || '0',
-                unit,
-                members,
-                avg
-            });
+            books.push({ num: parseInt(num) || i, numStr: num || String(i), isCurrent, title, autor, imageUrl, isbn: isbn || '0', unit, members, avg });
         }
         return books;
     }
 
     // ── Cover URL: manuelle URL bevorzugt, sonst OpenLibrary ──
     function coverUrl(book) {
-        if (book.imageUrl) return book.imageUrl;
-        if (book.isbn && book.isbn !== '0') {
-            return `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg?default=false`;
-        }
+        if (book.imageUrl && book.imageUrl !== '') return book.imageUrl;
+        if (book.isbn && book.isbn !== '0') return `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg?default=false`;
         return null;
     }
 
@@ -831,11 +640,30 @@
 
     function sortBooks(books, mode) {
         const b = [...books];
-        if (mode === 'num-asc')   return b.sort((a, z) => a.num - z.num);
-        if (mode === 'num-desc')  return b.sort((a, z) => z.num - a.num);
+        if (mode === 'num-asc')    return b.sort((a, z) => a.num - z.num);
+        if (mode === 'num-desc')   return b.sort((a, z) => z.num - a.num);
         if (mode === 'score-desc') return b.sort((a, z) => (z.avg ?? -1) - (a.avg ?? -1));
-        if (mode === 'score-asc') return b.sort((a, z) => (a.avg ?? 11) - (z.avg ?? 11));
+        if (mode === 'score-asc')  return b.sort((a, z) => (a.avg ?? 11) - (z.avg ?? 11));
         return b;
+    }
+
+    // ── Hilfsfunktion: Cover in ein Element laden ──
+    function loadCover(book, imgEl, placeholderEl) {
+        const url = coverUrl(book);
+        if (!url) {
+            imgEl.style.display = 'none';
+            placeholderEl.style.display = 'flex';
+            return;
+        }
+        imgEl.src = url;
+        imgEl.onload = function() {
+            imgEl.style.display = 'block';
+            placeholderEl.style.display = 'none';
+        };
+        imgEl.onerror = function() {
+            imgEl.style.display = 'none';
+            placeholderEl.style.display = 'flex';
+        };
     }
 
     // ── Now Reading Hero ──
@@ -843,159 +671,169 @@
         const current = books.find(b => b.isCurrent);
         if (!current) return;
 
-        const section = document.getElementById('now-reading');
-        section.style.display = 'flex';
-
+        document.getElementById('now-reading').style.display = 'flex';
         document.getElementById('now-title').textContent  = current.title;
         document.getElementById('now-author').textContent = current.autor;
         document.getElementById('now-num').textContent    = `Buch ${String(current.num).padStart(2, '0')}`;
 
         const wrap = document.getElementById('now-cover-wrap');
-        const url  = coverUrl(current);
-        if (url) {
-            const img = document.createElement('img');
-            img.alt  = current.title;
-            img.src  = url;
-            img.onerror = () => { wrap.innerHTML = '<div class="now-cover-placeholder">📖</div>'; };
-            wrap.innerHTML = '';
-            wrap.appendChild(img);
-        }
+        wrap.innerHTML = '';
+
+        const img = document.createElement('img');
+        img.style.display = 'none';
+        img.style.width   = '100%';
+        img.style.height  = '100%';
+        img.style.objectFit = 'cover';
+        img.alt = current.title;
+
+        const ph = document.createElement('span');
+        ph.className   = 'now-cover-placeholder';
+        ph.textContent = '📖';
+        ph.style.display = 'flex';
+
+        wrap.appendChild(img);
+        wrap.appendChild(ph);
+        loadCover(current, img, ph);
     }
 
     // ── Stats ──
     function renderStats(books) {
+        // Stats only count finished books (not current)
+        const finished = books.filter(b => !b.isCurrent);
         document.getElementById('stats-bar').style.display = 'flex';
-        document.getElementById('stat-books').textContent = books.length;
-        const rated = books.filter(b => b.avg !== null);
+        document.getElementById('stat-books').textContent = finished.length;
+        const rated = finished.filter(b => b.avg !== null);
         if (rated.length) {
             const overall = Math.round(rated.reduce((s, b) => s + b.avg, 0) / rated.length * 10) / 10;
             document.getElementById('stat-avg').textContent = overall.toFixed(1);
             document.getElementById('stat-top').textContent = Math.max(...rated.map(b => b.avg)).toFixed(1);
+        } else {
+            document.getElementById('stat-avg').textContent = '—';
+            document.getElementById('stat-top').textContent = '—';
         }
     }
 
     function renderAll(books, sortMode) {
         renderNowReading(books);
         renderStats(books);
-        document.getElementById('loading').style.display  = 'none';
+        document.getElementById('loading').style.display   = 'none';
         document.getElementById('book-area').style.display = 'block';
-        renderTable(sortBooks(books, sortMode));
+        // Only show finished books in the list
+        const finished = books.filter(b => !b.isCurrent);
+        renderTable(sortBooks(finished, sortMode));
     }
 
     // ── Table ──
-  function renderTable(books) {
-    const wrap  = document.getElementById('table-wrap');
-    const table = document.createElement('table');
-    table.className = 'book-table';
-    const thead = document.createElement('thead');
-    thead.innerHTML = `<tr>
-        <th></th><th style="width:44px;"></th>
-        <th>Titel / Autor</th>
-        <th class="hide-mobile">ISBN</th>
-        <th class="hide-mobile"></th>
-        <th style="text-align:right;">Score</th>
-    </tr>`;
-    table.appendChild(thead);
+    function renderTable(books) {
+        const wrap  = document.getElementById('table-wrap');
+        const table = document.createElement('table');
+        table.className = 'book-table';
 
-    const tbody = document.createElement('tbody');
-    books.forEach(book => {
-        const tr    = document.createElement('tr');
-        const avgD  = book.avg !== null ? book.avg.toFixed(1) : '';
-        const pct   = book.avg !== null ? Math.round(book.avg / 10 * 100) : 0;
-        const color = scoreColor(book.avg);
-        const url   = coverUrl(book);
+        const thead = document.createElement('thead');
+        const htr   = document.createElement('tr');
+        [['', ''], ['', '44px'], ['Titel / Autor', ''], ['ISBN', 'hide-mobile'], ['', 'hide-mobile'], ['Score', 'right']].forEach(([text, cls]) => {
+            const th = document.createElement('th');
+            th.textContent = text;
+            if (cls === 'right') th.style.textAlign = 'right';
+            else if (cls === 'hide-mobile') th.className = 'td-isbn'; // reuse hide rule
+            else if (cls && cls !== '') th.style.width = cls;
+            htr.appendChild(th);
+        });
+        thead.appendChild(htr);
+        table.appendChild(thead);
 
-        tr.addEventListener('click', () => openModal(book));
+        const tbody = document.createElement('tbody');
 
-        // TD: Nummer
-        const tdNum = document.createElement('td');
-        tdNum.className = 'td-num';
-        tdNum.textContent = String(book.num).padStart(2, '0');
-        tr.appendChild(tdNum);
+        books.forEach(book => {
+            const tr    = document.createElement('tr');
+            const avgD  = book.avg !== null ? book.avg.toFixed(1) : '';
+            const pct   = book.avg !== null ? Math.round(book.avg / 10 * 100) : 0;
+            const color = scoreColor(book.avg);
 
-        // TD: Cover
-        const tdCover = document.createElement('td');
-        tdCover.className = 'td-cover';
-        if (url) {
+            tr.addEventListener('click', () => openModal(book));
+
+            // Nr
+            const tdNum = document.createElement('td');
+            tdNum.className   = 'td-num';
+            tdNum.textContent = String(book.num).padStart(2, '0');
+            tr.appendChild(tdNum);
+
+            // Cover
+            const tdCover = document.createElement('td');
+            tdCover.className = 'td-cover';
+
             const img = document.createElement('img');
-            img.className = 'cover-thumb';
-            img.alt = book.title;
-            img.src = url;
-            img.onerror = function() {
-                this.remove();
-                const ph = document.createElement('div');
-                ph.className = 'cover-placeholder';
-                ph.textContent = '📖';
-                tdCover.appendChild(ph);
-            };
-            tdCover.appendChild(img);
-        } else {
+            img.className   = 'cover-thumb';
+            img.alt         = book.title;
+            img.style.display = 'none';
+
             const ph = document.createElement('div');
-            ph.className = 'cover-placeholder';
+            ph.className   = 'cover-placeholder';
             ph.textContent = '📖';
+            ph.style.display = 'flex';
+
+            tdCover.appendChild(img);
             tdCover.appendChild(ph);
-        }
-        tr.appendChild(tdCover);
+            tr.appendChild(tdCover);
 
-        // TD: Titel + Autor
-        const tdTitle = document.createElement('td');
-        tdTitle.className = 'td-title';
-        tdTitle.innerHTML = `<span class="book-title">${book.title}</span>
-            ${book.autor ? `<span class="book-author">${book.autor}</span>` : ''}`;
-        tr.appendChild(tdTitle);
+            loadCover(book, img, ph);
 
-        // TD: ISBN
-        const tdIsbn = document.createElement('td');
-        tdIsbn.className = 'td-isbn';
-        tdIsbn.textContent = book.isbn !== '0' ? book.isbn : '';
-        tr.appendChild(tdIsbn);
+            // Titel + Autor
+            const tdTitle = document.createElement('td');
+            tdTitle.className = 'td-title';
+            const titleSpan = document.createElement('span');
+            titleSpan.className   = 'book-title';
+            titleSpan.textContent = book.title;
+            tdTitle.appendChild(titleSpan);
+            if (book.autor) {
+                const authorSpan = document.createElement('span');
+                authorSpan.className   = 'book-author';
+                authorSpan.textContent = book.autor;
+                tdTitle.appendChild(authorSpan);
+            }
+            tr.appendChild(tdTitle);
 
-        // TD: Bar
-        const tdBar = document.createElement('td');
-        tdBar.className = 'td-bar';
-        tdBar.innerHTML = `<div class="rating-bar-bg">
-            <div class="rating-bar-fill" style="width:${pct}%"></div>
-        </div>`;
-        tr.appendChild(tdBar);
+            // ISBN
+            const tdIsbn = document.createElement('td');
+            tdIsbn.className   = 'td-isbn';
+            tdIsbn.textContent = book.isbn !== '0' ? book.isbn : '';
+            tr.appendChild(tdIsbn);
 
-        // TD: Score
-        const tdRating = document.createElement('td');
-        tdRating.className = 'td-rating';
-        tdRating.innerHTML = `<span class="rating-score-wrap">
-            <span class="rating-score" style="color:${color}">${avgD}</span>
-            <span class="rating-denom">${avgD ? '/10' : ''}</span>
-        </span>
-        ${book.unit ? `<span class="rating-unit">${book.unit}</span>` : ''}`;
-        tr.appendChild(tdRating);
+            // Bar
+            const tdBar = document.createElement('td');
+            tdBar.className = 'td-bar';
+            const barBg   = document.createElement('div');
+            barBg.className = 'rating-bar-bg';
+            const barFill = document.createElement('div');
+            barFill.className = 'rating-bar-fill';
+            barFill.style.width = pct + '%';
+            barBg.appendChild(barFill);
+            tdBar.appendChild(barBg);
+            tr.appendChild(tdBar);
 
-        tbody.appendChild(tr);
-    });
+            // Score
+            const tdRating = document.createElement('td');
+            tdRating.className = 'td-rating';
+            const scoreWrap = document.createElement('span');
+            scoreWrap.className = 'rating-score-wrap';
+            const scoreSpan = document.createElement('span');
+            scoreSpan.className   = 'rating-score';
+            scoreSpan.style.color = color;
+            scoreSpan.textContent = avgD;
+            const denomSpan = document.createElement('span');
+            denomSpan.className   = 'rating-denom';
+            denomSpan.textContent = avgD ? '/10' : '';
+            scoreWrap.appendChild(scoreSpan);
+            scoreWrap.appendChild(denomSpan);
+            tdRating.appendChild(scoreWrap);
+            if (book.unit) {
+                const unitSpan = document.createElement('span');
+                unitSpan.className   = 'rating-unit';
+                unitSpan.textContent = book.unit;
+                tdRating.appendChild(unitSpan);
+            }
+            tr.appendChild(tdRating);
 
-    table.appendChild(tbody);
-    wrap.innerHTML = '';
-    wrap.appendChild(table);
-}
-
-            tr.innerHTML = `
-                <td class="td-num">${String(book.num).padStart(2, '0')}</td>
-                <td class="td-title">
-                    <span class="book-title">${book.title}</span>
-                    ${book.autor ? `<span class="book-author">${book.autor}</span>` : ''}
-                </td>
-                <td class="td-isbn">${book.isbn !== '0' ? book.isbn : ''}</td>
-                <td class="td-bar">
-                    <div class="rating-bar-bg">
-                        <div class="rating-bar-fill" style="width:${pct}%"></div>
-                    </div>
-                </td>
-                <td class="td-rating">
-                    <span class="rating-score-wrap">
-                        <span class="rating-score" style="color:${color}">${avgD}</span><span class="rating-denom">${avgD ? '/10' : ''}</span>
-                    </span>
-                    ${book.unit ? `<span class="rating-unit">${book.unit}</span>` : ''}
-                </td>`;
-
-            tr.insertBefore(tdCover, tr.children[1]);
             tbody.appendChild(tr);
         });
 
@@ -1006,72 +844,79 @@
 
     // ── Modal ──
     function openModal(book) {
-        const url = coverUrl(book);
-        const cw  = document.getElementById('m-cover-wrap');
+        const cw = document.getElementById('m-cover-wrap');
+        cw.innerHTML = '';
 
-        if (url) {
-            const img = document.createElement('img');
-            img.className = 'modal-cover-img';
-            img.alt = book.title;
-            img.src = url;
-            img.onerror = () => {
-                cw.innerHTML = '<div class="modal-cover-placeholder">📖</div><div class="modal-cover-gradient"></div>';
-            };
-            cw.innerHTML = '';
-            cw.appendChild(img);
-            cw.insertAdjacentHTML('beforeend', '<div class="modal-cover-gradient"></div>');
-        } else {
-            cw.innerHTML = '<div class="modal-cover-placeholder">📖</div><div class="modal-cover-gradient"></div>';
-        }
+        const img = document.createElement('img');
+        img.className     = 'modal-cover-img';
+        img.alt           = book.title;
+        img.style.display = 'none';
+
+        const ph = document.createElement('span');
+        ph.className   = 'modal-cover-placeholder';
+        ph.textContent = '📖';
+        ph.style.display = 'flex';
+
+        const grad = document.createElement('div');
+        grad.className = 'modal-cover-gradient';
+
+        cw.appendChild(img);
+        cw.appendChild(ph);
+        cw.appendChild(grad);
+
+        loadCover(book, img, ph);
 
         document.getElementById('m-num').textContent    = `Buch ${String(book.num).padStart(2, '0')}`;
         document.getElementById('m-title').textContent  = book.title;
         document.getElementById('m-author').textContent = book.autor;
         const avgEl = document.getElementById('m-avg-num');
-        avgEl.textContent  = book.avg !== null ? book.avg.toFixed(1) : '';
-        avgEl.style.color  = scoreColor(book.avg);
+        avgEl.textContent = book.avg !== null ? book.avg.toFixed(1) : '—';
+        avgEl.style.color = scoreColor(book.avg);
         document.getElementById('m-avg-unit').textContent = book.unit;
 
         const mem = document.getElementById('m-members');
         if (!book.members.length) {
             mem.innerHTML = '<p style="color:var(--muted);font-size:.85rem;font-style:italic;">Noch keine Bewertungen</p>';
         } else {
-            mem.innerHTML = book.members.map(m => {
-                const initials = m.name.slice(0, 2).toUpperCase();
+            mem.innerHTML = '';
+            book.members.forEach(m => {
+                const row = document.createElement('div');
+                row.className = 'member-row';
                 const pct = Math.round(m.score / 10 * 100);
-                return `
-                    <div class="member-row">
-                        <div class="member-avatar">${initials}</div>
-                        <span class="member-name">${m.name}</span>
-                        <div class="member-bar-bg">
-                            <div class="member-bar-fill" style="width:${pct}%"></div>
-                        </div>
-                        <span class="member-score" style="color:${scoreColor(m.score)}">${m.score.toFixed(1)}</span>
-                    </div>`;
-            }).join('');
+                row.innerHTML = `
+                    <div class="member-avatar">${m.name.slice(0, 2).toUpperCase()}</div>
+                    <span class="member-name">${m.name}</span>
+                    <div class="member-bar-bg"><div class="member-bar-fill" style="width:${pct}%"></div></div>
+                    <span class="member-score" style="color:${scoreColor(m.score)}">${m.score.toFixed(1)}</span>`;
+                mem.appendChild(row);
+            });
         }
 
         document.getElementById('modal').classList.add('open');
         document.body.style.overflow = 'hidden';
-
-        const closeBtn = document.getElementById('modal-close');
-        const backdrop = document.getElementById('modal');
-        const onKey    = e => { if (e.key === 'Escape') closeModal(); };
-
-        closeBtn.onclick  = closeModal;
-        backdrop.onclick  = e => { if (e.target === backdrop) closeModal(); };
-        document.addEventListener('keydown', onKey);
-
-        // cleanup listener on close
-        backdrop._removeKey = () => document.removeEventListener('keydown', onKey);
     }
 
     function closeModal() {
-        const backdrop = document.getElementById('modal');
-        backdrop.classList.remove('open');
+        document.getElementById('modal').classList.remove('open');
         document.body.style.overflow = '';
-        if (backdrop._removeKey) { backdrop._removeKey(); backdrop._removeKey = null; }
     }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('modal').addEventListener('click', e => { if (e.target === document.getElementById('modal')) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── Sort buttons ──
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentSort = btn.dataset.sort;
+            if (allBooks.length) {
+                const finished = allBooks.filter(b => !b.isCurrent);
+                renderTable(sortBooks(finished, currentSort));
+            }
+        });
+    });
 
     // ── Debug ──
     function debug(msg) {
@@ -1082,16 +927,6 @@
         box.innerHTML = debugLines.map(l => `<div>${l}</div>`).join('');
     }
     function hideDebug() { document.getElementById('debug-box').style.display = 'none'; }
-
-    // ── Sort buttons ──
-    document.querySelectorAll('.sort-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentSort = btn.dataset.sort;
-            if (allBooks.length) renderTable(sortBooks(allBooks, currentSort));
-        });
-    });
 
     // ── Fetch ──
     async function fetchCSV() {
