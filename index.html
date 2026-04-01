@@ -1,262 +1,1021 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buchclub</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buchclub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0D0B14;
+            --bg2: #13101F;
+            --bg3: #1A1629;
+            --bg4: #221E35;
+            --primary: #BD00FF;
+            --cyan: #00F0FF;
+            --pink: #FF007A;
+            --text: #E8E4F0;
+            --muted: #7A7290;
+            --border: rgba(189, 0, 255, 0.18);
+            --border2: rgba(0, 240, 255, 0.15);
+        }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+        *, :before, :after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
 
-<style>
-/* ALLES ORIGINAL + kleine Ergänzungen */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+            pointer-events: none;
+            z-index: 0;
+        }
 
-:root {
-    --bg: #0D0B14;
-    --bg2: #13101F;
-    --bg3: #1A1629;
-    --bg4: #221E35;
-    --primary: #BD00FF;
-    --cyan: #00F0FF;
-    --pink: #FF007A;
-    --text: #E8E4F0;
-    --muted: #7A7290;
-    --border: rgba(189, 0, 255, 0.18);
-    --border2: rgba(0, 240, 255, 0.15);
-}
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(13, 11, 20, 0.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            height: 56px;
+        }
 
-body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Space Grotesk', sans-serif;
-    margin:0;
-}
+        .nav-brand { font-family: 'Space Mono', monospace; font-size: 1rem; font-weight: 700; letter-spacing: 0.04em; }
+        .nav-brand .brand-der  { color: var(--text); }
+        .nav-brand .brand-buch { color: var(--primary); }
+        .nav-brand .brand-club { color: var(--cyan); }
 
-/* Stats Page */
-#stats-page {
-    display:none;
-    max-width:1100px;
-    margin:40px auto;
-    padding:20px;
-}
+        .nav-right { display: flex; align-items: center; gap: 0.8rem; }
 
-.chart-box {
-    background: var(--bg2);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:20px;
-    margin-bottom:30px;
-}
+        .nav-tag {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
 
-.chart-title {
-    font-family:'Space Mono';
-    margin-bottom:10px;
-    color:var(--cyan);
-}
+        /* ── NOW READING HERO ── */
+        .now-reading {
+            position: relative;
+            z-index: 1;
+            padding: 3rem 2rem 2.5rem;
+            display: flex;
+            justify-content: center;
+        }
 
-.nav-btn {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding:6px 14px;
-    border-radius:20px;
-    cursor:pointer;
-}
+        .now-reading-inner {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            background: var(--bg2);
+            border: 1px solid rgba(189, 0, 255, 0.35);
+            border-radius: 20px;
+            padding: 2rem 2.5rem;
+            max-width: 780px;
+            width: 100%;
+            position: relative;
+            box-shadow:
+                0 0 0 1px rgba(0, 240, 255, 0.08),
+                0 0 40px rgba(189, 0, 255, 0.12),
+                0 0 80px rgba(189, 0, 255, 0.06);
+        }
 
-</style>
+        .now-reading-inner::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(189,0,255,0.25) 0%, transparent 40%, rgba(0,240,255,0.15) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .now-reading-inner > * { position: relative; z-index: 1; }
+
+        .now-badge {
+            position: absolute;
+            top: -13px;
+            left: 2rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--primary), var(--cyan));
+            color: #000;
+            padding: 3px 12px;
+            border-radius: 20px;
+        }
+
+        .now-cover-wrap {
+            flex-shrink: 0;
+            width: 110px;
+            height: 160px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(189,0,255,0.3);
+            background: var(--bg4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .now-cover-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .now-info { flex: 1; min-width: 0; }
+
+        .now-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 0.5rem;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .now-title {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(1.1rem, 3vw, 1.6rem);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+
+        .now-author { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.6rem; }
+
+        .now-isbn {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .now-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--primary);
+            letter-spacing: 0.2em;
+            opacity: 0.8;
+        }
+
+        .now-pulse {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--cyan);
+            font-family: 'Space Mono', monospace;
+            margin-top: 1rem;
+        }
+
+        .now-pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.4; transform: scale(0.7); }
+        }
+
+        /* ── STATS ── */
+        .stats {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            gap: 1px;
+            margin: 0 auto 3rem;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            max-width: 700px;
+        }
+
+        .stat { flex: 1; background: var(--bg2); padding: 1.2rem 1rem; text-align: center; }
+
+        .stat-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyan);
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+
+        /* ── MAIN / SORT ── */
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+        }
+
+        .sort-bar { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .sort-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-right: 0.3rem; }
+
+        .sort-btn {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 5px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .sort-btn:hover  { border-color: var(--primary); color: var(--text); }
+        .sort-btn.active { border-color: var(--cyan); color: var(--cyan); background: rgba(0,240,255,0.06); }
+
+        .section-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border) 0%, transparent 100%); min-width: 20px; }
+
+        .debug-box {
+            background: var(--bg3);
+            border: 1px solid var(--pink);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--pink);
+            display: none;
+        }
+
+        /* ── TABLE ── */
+        .book-table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .book-table thead tr { background: var(--bg3); border-bottom: 1px solid var(--border); }
+
+        .book-table th {
+            padding: 0.75rem 1rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .book-table tbody tr { border-bottom: 1px solid rgba(189,0,255,0.07); cursor: pointer; transition: background 0.15s ease; }
+        .book-table tbody tr:last-child { border-bottom: none; }
+        .book-table tbody tr:nth-child(odd)  { background: var(--bg2); }
+        .book-table tbody tr:nth-child(even) { background: var(--bg3); }
+        .book-table tbody tr:hover { background: var(--bg4); }
+        .book-table td { padding: 0.9rem 1rem; vertical-align: middle; }
+
+        .td-num { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--primary); opacity: 0.7; white-space: nowrap; width: 56px; }
+        .td-cover { width: 44px; padding-right: 0 !important; }
+
+        .cover-thumb {
+            width: 36px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 3px;
+            display: block;
+            background: var(--bg4);
+            border: 1px solid var(--border);
+        }
+
+        .cover-placeholder {
+            width: 36px;
+            height: 50px;
+            background: var(--bg4);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .td-title .book-title  { font-weight: 600; font-size: 0.95rem; color: var(--text); display: block; line-height: 1.3; }
+        .td-title .book-author { font-size: 0.78rem; color: var(--muted); margin-top: 2px; display: block; }
+        .td-title .book-isbn   { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); margin-top: 2px; display: block; opacity: 0.7; }
+
+        .td-rating { text-align: right !important; white-space: nowrap; min-width: 90px; }
+        .rating-score       { font-family: 'Space Mono', monospace; font-size: 1.3rem; font-weight: 700; display: inline; line-height: 1; }
+        .rating-denom       { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: #555068; font-weight: 400; }
+        .rating-score-wrap  { display: block; line-height: 1; margin-bottom: 2px; }
+
+        .rating-unit {
+            font-size: 0.65rem;
+            color: var(--primary);
+            letter-spacing: 0.06em;
+            display: block;
+            margin-top: 2px;
+            max-width: 130px;
+            margin-left: auto;
+            text-align: right;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .td-bar { width: 120px; padding-left: 0.5rem !important; }
+        .rating-bar-bg   { height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+        .rating-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--primary), var(--cyan)); }
+
+        /* ── MODAL ── */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(6px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .modal-backdrop.open { display: flex; }
+
+        .modal {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 580px;
+            width: 100%;
+            max-height: 88vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 60px rgba(189,0,255,0.12);
+            animation: slideUp 0.2s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem; right: 1.2rem;
+            background: var(--bg4);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 2;
+            transition: border-color 0.15s;
+        }
+
+        .modal-close:hover { border-color: var(--pink); color: var(--pink); }
+
+        .modal-cover-wrap {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 16px 16px 0 0;
+            background: var(--bg4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .modal-cover-img     { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .modal-cover-gradient { position: absolute; inset: 0; background: linear-gradient(0deg, var(--bg2) 0%, transparent 60%); pointer-events: none; }
+
+        .modal-body    { padding: 1.5rem 1.8rem 2rem; }
+        .modal-num     { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.25em; color: var(--primary); text-transform: uppercase; margin-bottom: 0.4rem; }
+        .modal-title   { font-family: 'Space Mono', monospace; font-size: 1.4rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.3rem; }
+        .modal-author  { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.3rem; }
+        .modal-isbn    { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--muted); margin-bottom: 1.2rem; opacity: 0.8; }
+
+        .modal-avg-row {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.2rem;
+            background: var(--bg3);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+        }
+
+        .modal-avg-num  { font-family: 'Space Mono', monospace; font-size: 2.6rem; font-weight: 700; color: var(--cyan); line-height: 1; }
+        .modal-avg-of   { font-size: 0.9rem; color: var(--muted); }
+        .modal-avg-unit { font-size: 0.8rem; color: var(--primary); margin-left: auto; text-align: right; }
+
+        .modal-members-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+
+        .member-row { display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .member-row:last-child { border-bottom: none; }
+
+        .member-avatar {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: var(--bg4);
+            border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.65rem; font-weight: 600;
+            color: var(--cyan);
+            flex-shrink: 0;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .member-name     { width: 70px; font-size: 0.85rem; color: var(--text); flex-shrink: 0; }
+        .member-bar-bg   { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+        .member-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--primary), var(--cyan)); }
+        .member-score    { font-family: 'Space Mono', monospace; font-size: 1rem; color: var(--cyan); width: 36px; text-align: right; font-weight: 700; }
+
+        footer { position: relative; z-index: 1; text-align: center; padding: 2rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+        footer a { color: var(--primary); text-decoration: none; }
+
+        .loading { text-align: center; padding: 3rem 2rem; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 0.85rem; letter-spacing: 0.1em; }
+
+        @media (max-width: 700px) {
+            .td-bar { display: none; }
+            nav { padding: 0 1rem; }
+            main { padding: 0 1rem 3rem; }
+            .now-reading { padding: 1.5rem 1rem 1.5rem; }
+            .now-reading-inner { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 1.8rem 1.5rem; }
+            .now-cover-wrap { width: 90px; height: 130px; }
+        }
+    </style>
 </head>
 <body>
 
-<nav style="display:flex;justify-content:space-between;padding:10px 20px;background:#111;">
-    <div>DER BUCH CLUB</div>
-    <div>
-        <button class="nav-btn" onclick="showMain()">Bücher</button>
-        <button class="nav-btn" onclick="showStats()">Stats</button>
+<nav>
+    <div class="nav-brand">
+        <span class="brand-der">DER </span><span class="brand-buch">BUCH</span><span class="brand-club"> CLUB</span>
+    </div>
+    <div class="nav-right">
+        <div class="nav-tag">Proudly Over Engineered by fu</div>
     </div>
 </nav>
 
-<!-- MAIN PAGE -->
-<div id="main-page">
-    <div id="loading" style="padding:40px;text-align:center;">Lade Daten...</div>
-    <div id="table-wrap"></div>
+<!-- Now Reading Hero -->
+<section class="now-reading" id="now-reading" style="display:none;">
+    <div class="now-reading-inner">
+        <div class="now-badge">◆ Now Reading</div>
+        <div class="now-cover-wrap" id="now-cover-wrap">📖</div>
+        <div class="now-info">
+            <div class="now-label">Aktuelles Buch</div>
+            <div class="now-title"  id="now-title"></div>
+            <div class="now-author" id="now-author"></div>
+            <div class="now-isbn"   id="now-isbn"></div>
+            <div class="now-num"    id="now-num"></div>
+            <div class="now-pulse">
+                <span class="now-pulse-dot"></span>
+                Gerade im Club
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="stats" id="stats-bar" style="display:none;">
+    <div class="stat"><span class="stat-num" id="stat-books">0</span><span class="stat-label">Bücher</span></div>
+    <div class="stat"><span class="stat-num" id="stat-avg">0</span><span class="stat-label">Ø Scores</span></div>
+    <div class="stat"><span class="stat-num" id="stat-top">0</span><span class="stat-label">Top Score</span></div>
 </div>
 
-<!-- STATS PAGE -->
-<div id="stats-page">
-
-    <div class="chart-box">
-        <div class="chart-title">Durchschnittsbewertung pro Mitglied</div>
-        <canvas id="chartMembers"></canvas>
+<main>
+    <div id="loading" class="loading">Lade Buchclub-Daten aus Google Sheets...</div>
+    <div id="book-area" style="display:none;">
+        <div class="sort-bar">
+            <span class="sort-label">Sortieren:</span>
+            <button class="sort-btn" data-sort="num-asc">Älteste zuerst</button>
+            <button class="sort-btn active" data-sort="num-desc">Neueste zuerst</button>
+            <button class="sort-btn" data-sort="score-desc">Beste zuerst</button>
+            <button class="sort-btn" data-sort="score-asc">Schlechteste zuerst</button>
+            <div class="section-line"></div>
+        </div>
+        <div id="table-wrap"></div>
     </div>
+    <div class="debug-box" id="debug-box"></div>
+</main>
 
-    <div class="chart-box">
-        <div class="chart-title">Bewertung über Zeit</div>
-        <canvas id="chartTime"></canvas>
+<footer>
+    Buchclub &nbsp;&nbsp;
+    <a href="https://docs.google.com/spreadsheets/d/1jUTHoky9yVm2jb6khIVOFe1LpQZhNzaH-KhgUibQYDA/edit" target="_blank">Google Sheets</a>
+</footer>
+
+<div class="modal-backdrop" id="modal">
+    <div class="modal" role="dialog">
+        <button class="modal-close" id="modal-close">&times;</button>
+        <div class="modal-cover-wrap" id="m-cover-wrap"></div>
+        <div class="modal-body">
+            <div class="modal-num"    id="m-num"></div>
+            <div class="modal-title"  id="m-title"></div>
+            <div class="modal-author" id="m-author"></div>
+            <div class="modal-isbn"   id="m-isbn"></div>
+            <div class="modal-avg-row">
+                <span class="modal-avg-num"  id="m-avg-num"></span>
+                <span class="modal-avg-of">/ 10</span>
+                <span class="modal-avg-unit" id="m-avg-unit"></span>
+            </div>
+            <div class="modal-members-label">Bewertungen der Mitglieder</div>
+            <div id="m-members"></div>
+        </div>
     </div>
-
-    <div class="chart-box">
-        <div class="chart-title">Wer bewertet am nächsten am Durchschnitt</div>
-        <canvas id="chartAccuracy"></canvas>
-    </div>
-
-    <div class="chart-box">
-        <div class="chart-title">Punkteverteilung</div>
-        <canvas id="chartHistogram"></canvas>
-    </div>
-
 </div>
 
 <script>
-let allBooks = [];
+    let allBooks    = [];
+    let currentSort = 'num-desc';
+    const debugLines = [];
 
-/* CSV PARSER (dein Original) */
-function parseCSVLine(line) {
-    const result = [];
-    let cell = '', inQuotes = false;
-    for (let i = 0; i < line.length; i++) {
-        const ch = line[i];
-        if (inQuotes) {
-            if (ch === '"') {
-                if (line[i + 1] === '"') { cell += '"'; i++; }
-                else { inQuotes = false; }
-            } else { cell += ch; }
-        } else if (ch === '"') {
-            inQuotes = true;
-        } else if (ch === ',') {
-            result.push(cell.trim()); cell = '';
+    // ── CSV Parser ──────────────────────────────────────────────────────────
+    function parseCSVLine(line) {
+        const result = [];
+        let cell = '', inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            if (inQuotes) {
+                if (ch === '"') {
+                    if (line[i + 1] === '"') { cell += '"'; i++; }
+                    else { inQuotes = false; }
+                } else { cell += ch; }
+            } else if (ch === '"') {
+                inQuotes = true;
+            } else if (ch === ',') {
+                result.push(cell.trim()); cell = '';
+            } else {
+                cell += ch;
+            }
+        }
+        result.push(cell.trim());
+        return result;
+    }
+
+    function parseCSVtext(text) {
+        return text
+            .replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+            .split('\n')
+            .filter(l => l.trim() !== '')
+            .map(l => parseCSVLine(l));
+    }
+
+    // ── Sheet-Struktur ──────────────────────────────────────────────────────
+    // A(0) = Nr
+    // B(1) = Aktuell  (beliebiger Wert = aktuell, leer = nicht aktuell)
+    // C(2) = Titel
+    // D(3) = Autor
+    // E(4) = ISBN
+    // F(5) = Image-URL  (bevorzugt; leer → OpenLibrary via ISBN → Placeholder)
+    // G(6) = Einheit
+    // H(7) = Ø Score
+    // I(8), J(9), K(10), L(11) … = Mitglied1, Wertung1, Mitglied2, Wertung2 …
+
+    function buildBooks(rows) {
+        const books = [];
+        if (!rows.length) return books;
+        for (let i = 1; i < rows.length; i++) {
+            const r = rows[i];
+            if (!r || r.length < 3) continue;
+
+            const num       = r[0] ? String(r[0]).trim() : '';
+            const isCurrent = !!(r[1] && String(r[1]).trim() !== '');
+            const title     = r[2] ? String(r[2]).trim() : '';
+            const autor     = r[3] ? String(r[3]).trim() : '';
+            const isbn      = r[4] ? String(r[4]).trim() : '';
+            const imageUrl  = r[5] ? String(r[5]).trim() : '';
+            const unit      = r[6] ? String(r[6]).trim() : '';
+            const avgRaw    = r[7] ? String(r[7]).trim() : '';
+
+            if (!title) continue;
+
+            const members = [];
+            for (let c = 8; c < r.length; c += 2) {
+                const rawName  = r[c];
+                const rawScore = r[c + 1];
+                if (rawName == null || rawScore == null) continue;
+                const name  = String(rawName).trim();
+                const score = parseFloat(String(rawScore).replace(',', '.'));
+                if (name && !isNaN(score)) members.push({ name, score });
+            }
+
+            let avg = null;
+            if (avgRaw) {
+                const parsed = parseFloat(avgRaw.replace(',', '.'));
+                if (!isNaN(parsed)) avg = parsed;
+            }
+            if (avg === null && members.length) {
+                avg = Math.round(members.reduce((s, m) => s + m.score, 0) / members.length * 10) / 10;
+            }
+
+            books.push({
+                num: parseInt(num) || i,
+                numStr: num || String(i),
+                isCurrent,
+                title,
+                autor,
+                isbn,
+                imageUrl,
+                unit,
+                members,
+                avg
+            });
+        }
+        return books;
+    }
+
+    // ── Cover-Logik ─────────────────────────────────────────────────────────
+    // Priorität: F (imageUrl) → OpenLibrary via ISBN → Placeholder
+    //
+    // loadCover() versucht die URLs nacheinander. Da <img> kein CORS-Problem
+    // mit OpenLibrary hat, reicht ein einfaches onerror-Chaining.
+
+    function openLibraryUrl(isbn) {
+        if (!isbn || isbn === '0') return null;
+        return `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false`;
+    }
+
+    function loadCover(book, imgEl, wrapEl) {
+        // Baut eine Kandidatenliste und versucht sie der Reihe nach
+        const candidates = [];
+        if (book.imageUrl) candidates.push(book.imageUrl);
+        const olUrl = openLibraryUrl(book.isbn);
+        if (olUrl) candidates.push(olUrl);
+
+        if (candidates.length === 0) {
+            // Kein Bild möglich → Placeholder bleibt
+            return;
+        }
+
+        let idx = 0;
+
+        function tryNext() {
+            if (idx >= candidates.length) {
+                // Alle fehlgeschlagen → Placeholder bleibt
+                imgEl.style.display = 'none';
+                return;
+            }
+            imgEl.src = candidates[idx++];
+            imgEl.style.display = '';
+        }
+
+        imgEl.onerror = function() {
+            imgEl.style.display = 'none';
+            tryNext();
+        };
+
+        imgEl.onload = function() {
+            // Bild geladen → Placeholder-Text im Wrap entfernen
+            wrapEl.childNodes.forEach(n => {
+                if (n.nodeType === Node.TEXT_NODE) n.remove();
+            });
+            // Falls ein span-Placeholder drin ist, ausblenden
+            const ph = wrapEl.querySelector('.cover-ph');
+            if (ph) ph.style.display = 'none';
+            imgEl.style.display = 'block';
+        };
+
+        tryNext();
+    }
+
+    // ── Hilfsfunktionen ─────────────────────────────────────────────────────
+    function scoreColor(v) {
+        if (v === null) return 'var(--muted)';
+        if (v >= 9) return '#00F0FF';
+        if (v >= 7) return '#BD00FF';
+        if (v >= 5) return '#FF007A';
+        return '#7A7290';
+    }
+
+    function sortBooks(books, mode) {
+        const b = [...books];
+        if (mode === 'num-asc')    return b.sort((a, z) => a.num - z.num);
+        if (mode === 'num-desc')   return b.sort((a, z) => z.num - a.num);
+        if (mode === 'score-desc') return b.sort((a, z) => (z.avg ?? -1) - (a.avg ?? -1));
+        if (mode === 'score-asc')  return b.sort((a, z) => (a.avg ?? 11) - (z.avg ?? 11));
+        return b;
+    }
+
+    // ── Now Reading Hero ─────────────────────────────────────────────────────
+    function renderNowReading(books) {
+        const current = books.find(b => b.isCurrent);
+        if (!current) return;
+
+        document.getElementById('now-reading').style.display = 'flex';
+        document.getElementById('now-title').textContent  = current.title;
+        document.getElementById('now-author').textContent = current.autor;
+        document.getElementById('now-isbn').textContent   = current.isbn ? `ISBN ${current.isbn}` : '';
+        document.getElementById('now-num').textContent    = `Buch ${String(current.num).padStart(2, '0')}`;
+
+        const wrap = document.getElementById('now-cover-wrap');
+        // Placeholder-Emoji bleibt als Textknoten; img wird davor eingefügt
+        const img = document.createElement('img');
+        img.alt          = current.title;
+        img.style.display = 'none';
+        img.style.width  = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '8px';
+        wrap.insertBefore(img, wrap.firstChild);
+        loadCover(current, img, wrap);
+    }
+
+    // ── Stats ────────────────────────────────────────────────────────────────
+    function renderStats(books) {
+        const finished = books.filter(b => !b.isCurrent);
+        document.getElementById('stats-bar').style.display = 'flex';
+        document.getElementById('stat-books').textContent  = finished.length;
+        const rated = finished.filter(b => b.avg !== null);
+        if (rated.length) {
+            const overall = Math.round(rated.reduce((s, b) => s + b.avg, 0) / rated.length * 10) / 10;
+            document.getElementById('stat-avg').textContent = overall.toFixed(1);
+            document.getElementById('stat-top').textContent = Math.max(...rated.map(b => b.avg)).toFixed(1);
         } else {
-            cell += ch;
+            document.getElementById('stat-avg').textContent = '—';
+            document.getElementById('stat-top').textContent = '—';
         }
     }
-    result.push(cell.trim());
-    return result;
-}
 
-function parseCSVtext(text) {
-    return text.split('\n').map(l => parseCSVLine(l));
-}
+    // ── renderAll ────────────────────────────────────────────────────────────
+    function renderAll(books, sortMode) {
+        renderNowReading(books);
+        renderStats(books);
+        document.getElementById('loading').style.display   = 'none';
+        document.getElementById('book-area').style.display = 'block';
+        const finished = books.filter(b => !b.isCurrent);
+        renderTable(sortBooks(finished, sortMode));
+    }
 
-function buildBooks(rows) {
-    const books = [];
-    for (let i = 1; i < rows.length; i++) {
-        const r = rows[i];
-        if (!r || !r[2]) continue;
+    // ── Table ────────────────────────────────────────────────────────────────
+    function renderTable(books) {
+        const wrap  = document.getElementById('table-wrap');
+        const table = document.createElement('table');
+        table.className = 'book-table';
 
-        const members = [];
-        for (let c = 8; c < r.length; c += 2) {
-            const name  = r[c];
-            const score = parseFloat(r[c + 1]);
-            if (name && !isNaN(score)) members.push({ name, score });
-        }
-
-        books.push({
-            num: parseInt(r[0]),
-            title: r[2],
-            members: members,
-            avg: parseFloat(r[7])
+        // Header
+        const thead = document.createElement('thead');
+        const htr   = document.createElement('tr');
+        const headers = [
+            { text: '',             style: '' },
+            { text: '',             style: 'width:44px' },
+            { text: 'Titel / Autor', style: '' },
+            { text: '',             style: 'width:120px' },
+            { text: 'Score',        style: 'text-align:right' },
+        ];
+        headers.forEach(h => {
+            const th = document.createElement('th');
+            th.textContent = h.text;
+            if (h.style) th.style.cssText = h.style;
+            htr.appendChild(th);
         });
+        thead.appendChild(htr);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+
+        books.forEach(book => {
+            const tr    = document.createElement('tr');
+            const avgD  = book.avg !== null ? book.avg.toFixed(1) : '';
+            const pct   = book.avg !== null ? Math.round(book.avg / 10 * 100) : 0;
+            const color = scoreColor(book.avg);
+
+            tr.addEventListener('click', () => openModal(book));
+
+            // ── Nr
+            const tdNum = document.createElement('td');
+            tdNum.className   = 'td-num';
+            tdNum.textContent = String(book.num).padStart(2, '0');
+            tr.appendChild(tdNum);
+
+            // ── Cover
+            const tdCover = document.createElement('td');
+            tdCover.className = 'td-cover';
+
+            const ph = document.createElement('div');
+            ph.className     = 'cover-placeholder cover-ph';
+            ph.textContent   = '📖';
+            ph.style.display = 'flex';
+            tdCover.appendChild(ph);
+
+            const img = document.createElement('img');
+            img.className     = 'cover-thumb';
+            img.alt           = book.title;
+            img.style.display = 'none';
+            tdCover.appendChild(img);
+
+            tr.appendChild(tdCover);
+            loadCover(book, img, tdCover);
+
+            // ── Titel + Autor + ISBN
+            const tdTitle = document.createElement('td');
+            tdTitle.className = 'td-title';
+
+            const titleSpan = document.createElement('span');
+            titleSpan.className   = 'book-title';
+            titleSpan.textContent = book.title;
+            tdTitle.appendChild(titleSpan);
+
+            if (book.autor) {
+                const authorSpan = document.createElement('span');
+                authorSpan.className   = 'book-author';
+                authorSpan.textContent = book.autor;
+                tdTitle.appendChild(authorSpan);
+            }
+
+            if (book.isbn) {
+                const isbnSpan = document.createElement('span');
+                isbnSpan.className   = 'book-isbn';
+                isbnSpan.textContent = `ISBN ${book.isbn}`;
+                tdTitle.appendChild(isbnSpan);
+            }
+
+            tr.appendChild(tdTitle);
+
+            // ── Bar
+            const tdBar = document.createElement('td');
+            tdBar.className = 'td-bar';
+            const barBg = document.createElement('div');
+            barBg.className = 'rating-bar-bg';
+            const barFill = document.createElement('div');
+            barFill.className    = 'rating-bar-fill';
+            barFill.style.width  = pct + '%';
+            barBg.appendChild(barFill);
+            tdBar.appendChild(barBg);
+            tr.appendChild(tdBar);
+
+            // ── Score
+            const tdRating = document.createElement('td');
+            tdRating.className = 'td-rating';
+
+            const scoreWrap = document.createElement('span');
+            scoreWrap.className = 'rating-score-wrap';
+
+            const scoreSpan = document.createElement('span');
+            scoreSpan.className   = 'rating-score';
+            scoreSpan.style.color = color;
+            scoreSpan.textContent = avgD;
+
+            const denomSpan = document.createElement('span');
+            denomSpan.className   = 'rating-denom';
+            denomSpan.textContent = avgD ? '/10' : '';
+
+            scoreWrap.appendChild(scoreSpan);
+            scoreWrap.appendChild(denomSpan);
+            tdRating.appendChild(scoreWrap);
+
+            if (book.unit) {
+                const unitSpan = document.createElement('span');
+                unitSpan.className   = 'rating-unit';
+                unitSpan.textContent = book.unit;
+                tdRating.appendChild(unitSpan);
+            }
+
+            tr.appendChild(tdRating);
+            tbody.appendChild(tr);
+        });
+
+        table.appendChild(tbody);
+        wrap.innerHTML = '';
+        wrap.appendChild(table);
     }
-    return books;
-}
 
-/* FETCH */
-async function fetchCSV() {
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmVkfS9NOAQ-BV4uA3XJUHW6hOS5LT5cFUr6DsESars2b7tg1SsMCVUHnyzKaEh4qnhXUqDiHXUl30/pub?gid=0&single=true&output=csv';
-    const response = await fetch(csvUrl);
-    const text = await response.text();
-    const raw  = parseCSVtext(text);
-    allBooks = buildBooks(raw);
-    buildStats();
-}
+    // ── Modal ────────────────────────────────────────────────────────────────
+    function openModal(book) {
+        const cw = document.getElementById('m-cover-wrap');
+        cw.innerHTML = '📖'; // Placeholder-Text als Fallback
 
-/* ===========================
-   STATS BERECHNUNGEN
-=========================== */
+        const grad = document.createElement('div');
+        grad.className = 'modal-cover-gradient';
 
-function buildStats() {
+        const img = document.createElement('img');
+        img.className     = 'modal-cover-img';
+        img.alt           = book.title;
+        img.style.display = 'none';
 
-    const members = {};
-    const histogram = {};
-    const timeLabels = [];
-    const timeValues = [];
+        cw.appendChild(img);
+        cw.appendChild(grad);
+        loadCover(book, img, cw);
 
-    allBooks.forEach(book => {
-        timeLabels.push(book.num);
-        timeValues.push(book.avg);
+        document.getElementById('m-num').textContent    = `Buch ${String(book.num).padStart(2, '0')}`;
+        document.getElementById('m-title').textContent  = book.title;
+        document.getElementById('m-author').textContent = book.autor;
+        document.getElementById('m-isbn').textContent   = book.isbn ? `ISBN ${book.isbn}` : '';
 
-        book.members.forEach(m => {
-            if (!members[m.name]) members[m.name] = [];
-            members[m.name].push({score:m.score, avg:book.avg});
+        const avgEl = document.getElementById('m-avg-num');
+        avgEl.textContent = book.avg !== null ? book.avg.toFixed(1) : '—';
+        avgEl.style.color = scoreColor(book.avg);
+        document.getElementById('m-avg-unit').textContent = book.unit;
 
-            const rounded = Math.round(m.score);
-            histogram[rounded] = (histogram[rounded] || 0) + 1;
+        const mem = document.getElementById('m-members');
+        if (!book.members.length) {
+            mem.innerHTML = '<p style="color:var(--muted);font-size:.85rem;font-style:italic;">Noch keine Bewertungen</p>';
+        } else {
+            mem.innerHTML = '';
+            book.members.forEach(m => {
+                const row = document.createElement('div');
+                row.className = 'member-row';
+                const pct = Math.round(m.score / 10 * 100);
+                row.innerHTML = `
+                    <div class="member-avatar">${m.name.slice(0, 2).toUpperCase()}</div>
+                    <span class="member-name">${m.name}</span>
+                    <div class="member-bar-bg"><div class="member-bar-fill" style="width:${pct}%"></div></div>
+                    <span class="member-score" style="color:${scoreColor(m.score)}">${m.score.toFixed(1)}</span>`;
+                mem.appendChild(row);
+            });
+        }
+
+        document.getElementById('modal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('modal').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('modal').addEventListener('click', e => {
+        if (e.target === document.getElementById('modal')) closeModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── Sort buttons ─────────────────────────────────────────────────────────
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentSort = btn.dataset.sort;
+            if (allBooks.length) {
+                renderTable(sortBooks(allBooks.filter(b => !b.isCurrent), currentSort));
+            }
         });
     });
 
-    // Durchschnitt pro Mitglied
-    const memberNames = [];
-    const memberAvg = [];
-    const memberAccuracy = [];
+    // ── Debug ────────────────────────────────────────────────────────────────
+    function debug(msg) {
+        console.log('Buchclub:', msg);
+        debugLines.push(msg);
+        const box = document.getElementById('debug-box');
+        box.style.display = 'block';
+        box.innerHTML = debugLines.map(l => `<div>${l}</div>`).join('');
+    }
+    function hideDebug() { document.getElementById('debug-box').style.display = 'none'; }
 
-    for (let name in members) {
-        const arr = members[name];
-        const avg = arr.reduce((s,a)=>s+a.score,0)/arr.length;
-        const diff = arr.reduce((s,a)=>s+Math.abs(a.score-a.avg),0)/arr.length;
-
-        memberNames.push(name);
-        memberAvg.push(avg.toFixed(2));
-        memberAccuracy.push(diff.toFixed(2));
+    // ── Fetch CSV ────────────────────────────────────────────────────────────
+    async function fetchCSV() {
+        try {
+            const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmVkfS9NOAQ-BV4uA3XJUHW6hOS5LT5cFUr6DsESars2b7tg1SsMCVUHnyzKaEh4qnhXUqDiHXUl30/pub?gid=0&single=true&output=csv';
+            debug('CSV laden von: ' + csvUrl);
+            const response = await fetch(csvUrl);
+            if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            const text = await response.text();
+            const raw  = parseCSVtext(text);
+            debug(`CSV geladen: ${raw.length} Zeilen`);
+            if (raw.length > 1) {
+                debug('Header: ' + JSON.stringify(raw[0]));
+                debug('Zeile 2: ' + JSON.stringify(raw[1]));
+            }
+            const books = buildBooks(raw);
+            debug(`Geparsed: ${books.length} Bücher`);
+            allBooks = books;
+            if (!allBooks.length) throw new Error('Keine Bücher gefunden. Header-Zeile prüfen.');
+            renderAll(allBooks, currentSort);
+            hideDebug();
+        } catch (err) {
+            debug('FEHLER: ' + err.message);
+            document.getElementById('loading').innerHTML =
+                `Fehler beim Laden: ${err.message}<br><small>Überprüfe die CSV-URL und Sheet-Struktur.</small>`;
+        }
     }
 
-    /* CHARTS */
-    new Chart(chartMembers, {
-        type:'bar',
-        data:{
-            labels:memberNames,
-            datasets:[{label:'Ø Bewertung', data:memberAvg}]
-        }
-    });
-
-    new Chart(chartTime, {
-        type:'line',
-        data:{
-            labels:timeLabels,
-            datasets:[{label:'Ø Score', data:timeValues}]
-        }
-    });
-
-    new Chart(chartAccuracy, {
-        type:'bar',
-        data:{
-            labels:memberNames,
-            datasets:[{label:'Abweichung vom Durchschnitt', data:memberAccuracy}]
-        }
-    });
-
-    new Chart(chartHistogram, {
-        type:'bar',
-        data:{
-            labels:Object.keys(histogram),
-            datasets:[{label:'Anzahl Bewertungen', data:Object.values(histogram)}]
-        }
-    });
-}
-
-/* NAVIGATION */
-function showStats() {
-    document.getElementById("main-page").style.display = "none";
-    document.getElementById("stats-page").style.display = "block";
-}
-
-function showMain() {
-    document.getElementById("main-page").style.display = "block";
-    document.getElementById("stats-page").style.display = "none";
-}
-
-fetchCSV();
+    window.addEventListener('load', fetchCSV);
 </script>
-
 </body>
 </html>
