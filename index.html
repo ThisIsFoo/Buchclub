@@ -883,53 +883,98 @@
     }
 
     // ── Table ──
-    function renderTable(books) {
-        const wrap  = document.getElementById('table-wrap');
-        const table = document.createElement('table');
-        table.className = 'book-table';
-        table.innerHTML = `
-            <thead>
-                <tr>
-                    <th></th>
-                    <th style="width:44px;"></th>
-                    <th>Titel / Autor</th>
-                    <th class="hide-mobile">ISBN</th>
-                    <th class="hide-mobile"></th>
-                    <th style="text-align:right;">Score</th>
-                </tr>
-            </thead>`;
-        const tbody = document.createElement('tbody');
+  function renderTable(books) {
+    const wrap  = document.getElementById('table-wrap');
+    const table = document.createElement('table');
+    table.className = 'book-table';
+    const thead = document.createElement('thead');
+    thead.innerHTML = `<tr>
+        <th></th><th style="width:44px;"></th>
+        <th>Titel / Autor</th>
+        <th class="hide-mobile">ISBN</th>
+        <th class="hide-mobile"></th>
+        <th style="text-align:right;">Score</th>
+    </tr>`;
+    table.appendChild(thead);
 
-        books.forEach(book => {
-            const tr    = document.createElement('tr');
-            tr.addEventListener('click', () => openModal(book));
-            const avgD  = book.avg !== null ? book.avg.toFixed(1) : '';
-            const pct   = book.avg !== null ? Math.round(book.avg / 10 * 100) : 0;
-            const color = scoreColor(book.avg);
-            const url   = coverUrl(book);
+    const tbody = document.createElement('tbody');
+    books.forEach(book => {
+        const tr    = document.createElement('tr');
+        const avgD  = book.avg !== null ? book.avg.toFixed(1) : '';
+        const pct   = book.avg !== null ? Math.round(book.avg / 10 * 100) : 0;
+        const color = scoreColor(book.avg);
+        const url   = coverUrl(book);
 
-            // Cover TD
-            const tdCover = document.createElement('td');
-            tdCover.className = 'td-cover';
-            if (url) {
-                const img = document.createElement('img');
-                img.className = 'cover-thumb';
-                img.alt = book.title;
-                img.src = url;
-                img.onerror = function() {
-                    this.style.display = 'none';
-                    const ph = document.createElement('div');
-                    ph.className = 'cover-placeholder';
-                    ph.textContent = '📖';
-                    tdCover.appendChild(ph);
-                };
-                tdCover.appendChild(img);
-            } else {
+        tr.addEventListener('click', () => openModal(book));
+
+        // TD: Nummer
+        const tdNum = document.createElement('td');
+        tdNum.className = 'td-num';
+        tdNum.textContent = String(book.num).padStart(2, '0');
+        tr.appendChild(tdNum);
+
+        // TD: Cover
+        const tdCover = document.createElement('td');
+        tdCover.className = 'td-cover';
+        if (url) {
+            const img = document.createElement('img');
+            img.className = 'cover-thumb';
+            img.alt = book.title;
+            img.src = url;
+            img.onerror = function() {
+                this.remove();
                 const ph = document.createElement('div');
                 ph.className = 'cover-placeholder';
                 ph.textContent = '📖';
                 tdCover.appendChild(ph);
-            }
+            };
+            tdCover.appendChild(img);
+        } else {
+            const ph = document.createElement('div');
+            ph.className = 'cover-placeholder';
+            ph.textContent = '📖';
+            tdCover.appendChild(ph);
+        }
+        tr.appendChild(tdCover);
+
+        // TD: Titel + Autor
+        const tdTitle = document.createElement('td');
+        tdTitle.className = 'td-title';
+        tdTitle.innerHTML = `<span class="book-title">${book.title}</span>
+            ${book.autor ? `<span class="book-author">${book.autor}</span>` : ''}`;
+        tr.appendChild(tdTitle);
+
+        // TD: ISBN
+        const tdIsbn = document.createElement('td');
+        tdIsbn.className = 'td-isbn';
+        tdIsbn.textContent = book.isbn !== '0' ? book.isbn : '';
+        tr.appendChild(tdIsbn);
+
+        // TD: Bar
+        const tdBar = document.createElement('td');
+        tdBar.className = 'td-bar';
+        tdBar.innerHTML = `<div class="rating-bar-bg">
+            <div class="rating-bar-fill" style="width:${pct}%"></div>
+        </div>`;
+        tr.appendChild(tdBar);
+
+        // TD: Score
+        const tdRating = document.createElement('td');
+        tdRating.className = 'td-rating';
+        tdRating.innerHTML = `<span class="rating-score-wrap">
+            <span class="rating-score" style="color:${color}">${avgD}</span>
+            <span class="rating-denom">${avgD ? '/10' : ''}</span>
+        </span>
+        ${book.unit ? `<span class="rating-unit">${book.unit}</span>` : ''}`;
+        tr.appendChild(tdRating);
+
+        tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+    wrap.innerHTML = '';
+    wrap.appendChild(table);
+}
 
             tr.innerHTML = `
                 <td class="td-num">${String(book.num).padStart(2, '0')}</td>
