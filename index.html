@@ -21,11 +21,7 @@
             --border2: rgba(0, 240, 255, 0.15);
         }
 
-        *, :before, :after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        *, :before, :after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background: var(--bg);
@@ -66,17 +62,9 @@
             letter-spacing: 0.04em;
         }
 
-        .nav-brand .brand-der {
-            color: var(--text);
-        }
-
-        .nav-brand .brand-buch {
-            color: var(--primary);
-        }
-
-        .nav-brand .brand-club {
-            color: var(--cyan);
-        }
+        .nav-brand .brand-der  { color: var(--text); }
+        .nav-brand .brand-buch { color: var(--primary); }
+        .nav-brand .brand-club { color: var(--cyan); }
 
         .nav-right {
             display: flex;
@@ -94,50 +82,149 @@
             border-radius: 20px;
         }
 
-        .hero {
+        /* ── NOW READING HERO ── */
+        .now-reading {
             position: relative;
             z-index: 1;
-            padding: 4rem 2rem 3rem;
-            text-align: center;
-            overflow: hidden;
+            padding: 3rem 2rem 2.5rem;
+            display: flex;
+            justify-content: center;
         }
 
-        .hero::before {
+        .now-reading-inner {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            background: var(--bg2);
+            border: 1px solid rgba(189, 0, 255, 0.35);
+            border-radius: 20px;
+            padding: 2rem 2.5rem;
+            max-width: 780px;
+            width: 100%;
+            position: relative;
+            box-shadow:
+                0 0 0 1px rgba(0, 240, 255, 0.08),
+                0 0 40px rgba(189, 0, 255, 0.12),
+                0 0 80px rgba(189, 0, 255, 0.06);
+        }
+
+        /* animated corner glow */
+        .now-reading-inner::before {
             content: '';
             position: absolute;
-            top: -80px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 300px;
-            background: radial-gradient(ellipse, rgba(189, 0, 255, 0.12) 0%, transparent 70%);
+            inset: -1px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(189,0,255,0.25) 0%, transparent 40%, rgba(0,240,255,0.15) 100%);
             pointer-events: none;
+            z-index: 0;
         }
 
-        .hero h1 {
+        .now-reading-inner > * { position: relative; z-index: 1; }
+
+        .now-badge {
+            position: absolute;
+            top: -13px;
+            left: 2rem;
             font-family: 'Space Mono', monospace;
-            font-size: clamp(1.6rem, 5vw, 3.2rem);
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--primary), var(--cyan));
+            color: #000;
+            padding: 3px 12px;
+            border-radius: 20px;
+        }
+
+        .now-cover-wrap {
+            flex-shrink: 0;
+            width: 110px;
+            height: 160px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow:
+                0 8px 32px rgba(0,0,0,0.5),
+                0 0 0 1px rgba(189,0,255,0.3);
+        }
+
+        .now-cover-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .now-cover-placeholder {
+            width: 100%;
+            height: 100%;
+            background: var(--bg4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .now-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .now-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 0.5rem;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .now-title {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(1.1rem, 3vw, 1.6rem);
             font-weight: 700;
             line-height: 1.2;
-            letter-spacing: -0.02em;
+            color: var(--text);
+            margin-bottom: 0.4rem;
         }
 
-        .hero h1 .accent-p {
-            color: var(--primary);
-        }
-
-        .hero h1 .accent-c {
-            color: var(--cyan);
-        }
-
-        .hero-sub {
-            margin-top: 1rem;
+        .now-author {
             color: var(--muted);
-            font-size: 0.95rem;
-            font-weight: 300;
-            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
         }
 
+        .now-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--primary);
+            letter-spacing: 0.2em;
+            opacity: 0.8;
+        }
+
+        .now-pulse {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--cyan);
+            font-family: 'Space Mono', monospace;
+            margin-top: 1rem;
+        }
+
+        .now-pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.7); }
+        }
+
+        /* ── STATS ── */
         .stats {
             position: relative;
             z-index: 1;
@@ -213,16 +300,8 @@
             white-space: nowrap;
         }
 
-        .sort-btn:hover {
-            border-color: var(--primary);
-            color: var(--text);
-        }
-
-        .sort-btn.active {
-            border-color: var(--cyan);
-            color: var(--cyan);
-            background: rgba(0, 240, 255, 0.06);
-        }
+        .sort-btn:hover { border-color: var(--primary); color: var(--text); }
+        .sort-btn.active { border-color: var(--cyan); color: var(--cyan); background: rgba(0,240,255,0.06); }
 
         .section-line {
             flex: 1;
@@ -243,6 +322,7 @@
             display: none;
         }
 
+        /* ── TABLE ── */
         .book-table {
             width: 100%;
             border-collapse: collapse;
@@ -272,21 +352,10 @@
             transition: background 0.15s ease;
         }
 
-        .book-table tbody tr:last-child {
-            border-bottom: none;
-        }
-
-        .book-table tbody tr:nth-child(odd) {
-            background: var(--bg2);
-        }
-
-        .book-table tbody tr:nth-child(even) {
-            background: var(--bg3);
-        }
-
-        .book-table tbody tr:hover {
-            background: var(--bg4);
-        }
+        .book-table tbody tr:last-child { border-bottom: none; }
+        .book-table tbody tr:nth-child(odd)  { background: var(--bg2); }
+        .book-table tbody tr:nth-child(even) { background: var(--bg3); }
+        .book-table tbody tr:hover { background: var(--bg4); }
 
         .book-table td {
             padding: 0.9rem 1rem;
@@ -302,10 +371,7 @@
             width: 56px;
         }
 
-        .td-cover {
-            width: 44px;
-            padding-right: 0 !important;
-        }
+        .td-cover { width: 44px; padding-right: 0 !important; }
 
         .cover-thumb {
             width: 36px;
@@ -358,26 +424,9 @@
             min-width: 90px;
         }
 
-        .rating-score {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.3rem;
-            font-weight: 700;
-            display: inline;
-            line-height: 1;
-        }
-
-        .rating-denom {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
-            color: #555068;
-            font-weight: 400;
-        }
-
-        .rating-score-wrap {
-            display: block;
-            line-height: 1;
-            margin-bottom: 2px;
-        }
+        .rating-score { font-family: 'Space Mono', monospace; font-size: 1.3rem; font-weight: 700; display: inline; line-height: 1; }
+        .rating-denom { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: #555068; font-weight: 400; }
+        .rating-score-wrap { display: block; line-height: 1; margin-bottom: 2px; }
 
         .rating-unit {
             font-size: 0.65rem;
@@ -393,14 +442,11 @@
             text-overflow: ellipsis;
         }
 
-        .td-bar {
-            width: 120px;
-            padding-left: 0.5rem !important;
-        }
+        .td-bar { width: 120px; padding-left: 0.5rem !important; }
 
         .rating-bar-bg {
             height: 3px;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255,255,255,0.06);
             border-radius: 2px;
             overflow: hidden;
         }
@@ -411,11 +457,12 @@
             background: linear-gradient(90deg, var(--primary), var(--cyan));
         }
 
+        /* ── MODAL ── */
         .modal-backdrop {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0,0,0,0.8);
             backdrop-filter: blur(6px);
             z-index: 200;
             align-items: center;
@@ -423,9 +470,7 @@
             padding: 1.5rem;
         }
 
-        .modal-backdrop.open {
-            display: flex;
-        }
+        .modal-backdrop.open { display: flex; }
 
         .modal {
             background: var(--bg2);
@@ -436,38 +481,31 @@
             max-height: 88vh;
             overflow-y: auto;
             position: relative;
-            box-shadow: 0 0 60px rgba(189, 0, 255, 0.12);
+            box-shadow: 0 0 60px rgba(189,0,255,0.12);
             animation: slideUp 0.2s ease;
         }
 
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .modal-close {
             position: absolute;
-            top: 1rem;
-            right: 1.2rem;
+            top: 1rem; right: 1.2rem;
             background: var(--bg4);
             border: 1px solid var(--border);
             color: var(--muted);
-            width: 30px;
-            height: 30px;
+            width: 30px; height: 30px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             cursor: pointer;
             font-size: 1rem;
             z-index: 2;
             transition: border-color 0.15s;
         }
 
-        .modal-close:hover {
-            border-color: var(--pink);
-            color: var(--pink);
-        }
+        .modal-close:hover { border-color: var(--pink); color: var(--pink); }
 
         .modal-cover-wrap {
             position: relative;
@@ -476,11 +514,7 @@
             border-radius: 16px 16px 0 0;
         }
 
-        .modal-cover-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .modal-cover-img { width: 100%; height: 100%; object-fit: cover; }
 
         .modal-cover-gradient {
             position: absolute;
@@ -489,18 +523,13 @@
         }
 
         .modal-cover-placeholder {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             background: linear-gradient(135deg, var(--bg3), var(--bg4));
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             font-size: 3rem;
         }
 
-        .modal-body {
-            padding: 1.5rem 1.8rem 2rem;
-        }
+        .modal-body { padding: 1.5rem 1.8rem 2rem; }
 
         .modal-num {
             font-family: 'Space Mono', monospace;
@@ -511,19 +540,8 @@
             margin-bottom: 0.4rem;
         }
 
-        .modal-title {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.4rem;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 0.3rem;
-        }
-
-        .modal-author {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.2rem;
-        }
+        .modal-title { font-family: 'Space Mono', monospace; font-size: 1.4rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.3rem; }
+        .modal-author { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.2rem; }
 
         .modal-avg-row {
             display: flex;
@@ -536,25 +554,9 @@
             border-radius: 10px;
         }
 
-        .modal-avg-num {
-            font-family: 'Space Mono', monospace;
-            font-size: 2.6rem;
-            font-weight: 700;
-            color: var(--cyan);
-            line-height: 1;
-        }
-
-        .modal-avg-of {
-            font-size: 0.9rem;
-            color: var(--muted);
-        }
-
-        .modal-avg-unit {
-            font-size: 0.8rem;
-            color: var(--primary);
-            margin-left: auto;
-            text-align: right;
-        }
+        .modal-avg-num { font-family: 'Space Mono', monospace; font-size: 2.6rem; font-weight: 700; color: var(--cyan); line-height: 1; }
+        .modal-avg-of  { font-size: 0.9rem; color: var(--muted); }
+        .modal-avg-unit { font-size: 0.8rem; color: var(--primary); margin-left: auto; text-align: right; }
 
         .modal-members-label {
             font-size: 0.65rem;
@@ -571,71 +573,31 @@
             align-items: center;
             gap: 0.8rem;
             padding: 0.6rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
         }
-
-        .member-row:last-child {
-            border-bottom: none;
-        }
+        .member-row:last-child { border-bottom: none; }
 
         .member-avatar {
-            width: 28px;
-            height: 28px;
+            width: 28px; height: 28px;
             border-radius: 50%;
             background: var(--bg4);
             border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            font-weight: 600;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.65rem; font-weight: 600;
             color: var(--cyan);
             flex-shrink: 0;
             font-family: 'Space Mono', monospace;
         }
 
-        .member-name {
-            width: 70px;
-            font-size: 0.85rem;
-            color: var(--text);
-            flex-shrink: 0;
-        }
+        .member-name { width: 70px; font-size: 0.85rem; color: var(--text); flex-shrink: 0; }
 
-        .member-bar-bg {
-            flex: 1;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 2px;
-            overflow: hidden;
-        }
+        .member-bar-bg { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+        .member-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--primary), var(--cyan)); }
 
-        .member-bar-fill {
-            height: 100%;
-            border-radius: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--cyan));
-        }
-
-        .member-score {
-            font-family: 'Space Mono', monospace;
-            font-size: 1rem;
-            color: var(--cyan);
-            width: 36px;
-            text-align: right;
-            font-weight: 700;
-        }
-
-        .state-msg {
-            text-align: center;
-            padding: 3rem 2rem;
-            color: var(--muted);
-            font-family: 'Space Mono', monospace;
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-        }
+        .member-score { font-family: 'Space Mono', monospace; font-size: 1rem; color: var(--cyan); width: 36px; text-align: right; font-weight: 700; }
 
         footer {
-            position: relative;
-            z-index: 1;
+            position: relative; z-index: 1;
             text-align: center;
             padding: 2rem;
             border-top: 1px solid var(--border);
@@ -643,24 +605,7 @@
             color: var(--muted);
         }
 
-        footer a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        @media (max-width: 700px) {
-            .td-isbn, .td-bar {
-                display: none;
-            }
-
-            nav {
-                padding: 0 1rem;
-            }
-
-            main {
-                padding: 0 1rem 3rem;
-            }
-        }
+        footer a { color: var(--primary); text-decoration: none; }
 
         .loading {
             text-align: center;
@@ -670,403 +615,467 @@
             font-size: 0.85rem;
             letter-spacing: 0.1em;
         }
+
+        @media (max-width: 700px) {
+            .td-isbn, .td-bar { display: none; }
+            nav { padding: 0 1rem; }
+            main { padding: 0 1rem 3rem; }
+            .now-reading { padding: 1.5rem 1rem 1.5rem; }
+            .now-reading-inner { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 1.8rem 1.5rem; }
+            .now-cover-wrap { width: 90px; height: 130px; }
+        }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-brand">
-            <span class="brand-der">DER </span><span class="brand-buch">BUCH</span><span class="brand-club"> CLUB</span>
-        </div>
-        <div class="nav-right">
-            <div class="nav-tag">Proudly Over Engineered by fu</div>
-        </div>
-    </nav>
 
-    <section class="hero">
-        <h1>Das Buch<span style="color:var(--text)">.</span> <br><span class="accent-p">Der Club<span style="color:var(--primary)">.</span></span><br><span class="accent-c">Die Page<span style="color:var(--cyan)">.</span></span></h1>
-        <p class="hero-sub">Dass man mal was sieht!</p>
-    </section>
-
-    <div class="stats" id="stats-bar" style="display: none;">
-        <div class="stat">
-            <span class="stat-num" id="stat-books">0</span>
-            <span class="stat-label">Bücher</span>
-        </div>
-        <div class="stat">
-            <span class="stat-num" id="stat-avg">0</span>
-            <span class="stat-label">Ø Scores</span>
-        </div>
-        <div class="stat">
-            <span class="stat-num" id="stat-top">0</span>
-            <span class="stat-label">Top Scores</span>
-        </div>
+<nav>
+    <div class="nav-brand">
+        <span class="brand-der">DER </span><span class="brand-buch">BUCH</span><span class="brand-club"> CLUB</span>
     </div>
+    <div class="nav-right">
+        <div class="nav-tag">Proudly Over Engineered by fu</div>
+    </div>
+</nav>
 
-    <main>
-        <div id="loading" class="loading">Lade Buchclub-Daten aus Google Sheets...</div>
-        <div id="book-area" style="display: none;">
-            <div class="sort-bar" id="sort-bar">
-                <span class="sort-label">Sortieren:</span>
-                <button class="sort-btn" data-sort="num-asc">Älteste zuerst</button>
-                <button class="sort-btn active" data-sort="num-desc">Neueste zuerst</button>
-                <button class="sort-btn" data-sort="score-desc">Beste zuerst</button>
-                <button class="sort-btn" data-sort="score-asc">Schlechteste zuerst</button>
-                <div class="section-line"></div>
-            </div>
-            <div id="table-wrap"></div>
+<!-- Now Reading Hero – wird per JS befüllt -->
+<section class="now-reading" id="now-reading" style="display:none;">
+    <div class="now-reading-inner">
+        <div class="now-badge">◆ Now Reading</div>
+        <div class="now-cover-wrap" id="now-cover-wrap">
+            <div class="now-cover-placeholder">📖</div>
         </div>
-
-        <div class="debug-box" id="debug-box"></div>
-    </main>
-
-    <footer>
-        Buchclub &nbsp;&nbsp; <a href="https://docs.google.com/spreadsheets/d/1jUTHoky9yVm2jb6khIVOFe1LpQZhNzaH-KhgUibQYDA/edit" target="_blank">Google Sheets</a>
-    </footer>
-
-    <div class="modal-backdrop" id="modal">
-        <div class="modal" role="dialog">
-            <button class="modal-close" id="modal-close">&times;</button>
-            <div class="modal-cover-wrap" id="m-cover-wrap"></div>
-            <div class="modal-body">
-                <div class="modal-num" id="m-num"></div>
-                <div class="modal-title" id="m-title"></div>
-                <div class="modal-author" id="m-author"></div>
-                <div class="modal-avg-row">
-                    <span class="modal-avg-num" id="m-avg-num"></span>
-                    <span class="modal-avg-of">/ 10</span>
-                    <span class="modal-avg-unit" id="m-avg-unit"></span>
-                </div>
-                <div class="modal-members-label">Bewertungen der Mitglieder</div>
-                <div id="m-members"></div>
+        <div class="now-info">
+            <div class="now-label">Aktuelles Buch</div>
+            <div class="now-title" id="now-title"></div>
+            <div class="now-author" id="now-author"></div>
+            <div class="now-num" id="now-num"></div>
+            <div class="now-pulse">
+                <span class="now-pulse-dot"></span>
+                Gerade im Club
             </div>
         </div>
     </div>
+</section>
 
-    <script>
-        let allBooks = [];
-        let currentSort = 'num-desc';
-        const debugLines = [];
+<div class="stats" id="stats-bar" style="display:none;">
+    <div class="stat">
+        <span class="stat-num" id="stat-books">0</span>
+        <span class="stat-label">Bücher</span>
+    </div>
+    <div class="stat">
+        <span class="stat-num" id="stat-avg">0</span>
+        <span class="stat-label">Ø Scores</span>
+    </div>
+    <div class="stat">
+        <span class="stat-num" id="stat-top">0</span>
+        <span class="stat-label">Top Scores</span>
+    </div>
+</div>
 
-        // CSV robust parsen mit korrekter Quote-Behandlung
-        // Ignoriert Kommas innerhalb von Spalte B (Index 1) auch ohne Quotes,
-        // indem wir die Zeile zuerst nach fester Spaltenanzahl aufteilen.
-        function parseCSVLine(line) {
-            const result = [];
-            let cell = '';
-            let inQuotes = false;
-            for (let i = 0; i < line.length; i++) {
-                const ch = line[i];
-                if (inQuotes) {
-                    if (ch === '"') {
-                        if (line[i + 1] === '"') { cell += '"'; i++; }
-                        else { inQuotes = false; }
-                    } else {
-                        cell += ch;
-                    }
-                } else if (ch === '"') {
-                    inQuotes = true;
-                } else if (ch === ',') {
-                    result.push(cell.trim());
-                    cell = '';
-                } else {
-                    cell += ch;
-                }
+<main>
+    <div id="loading" class="loading">Lade Buchclub-Daten aus Google Sheets...</div>
+    <div id="book-area" style="display:none;">
+        <div class="sort-bar" id="sort-bar">
+            <span class="sort-label">Sortieren:</span>
+            <button class="sort-btn" data-sort="num-asc">Älteste zuerst</button>
+            <button class="sort-btn active" data-sort="num-desc">Neueste zuerst</button>
+            <button class="sort-btn" data-sort="score-desc">Beste zuerst</button>
+            <button class="sort-btn" data-sort="score-asc">Schlechteste zuerst</button>
+            <div class="section-line"></div>
+        </div>
+        <div id="table-wrap"></div>
+    </div>
+    <div class="debug-box" id="debug-box"></div>
+</main>
+
+<footer>
+    Buchclub &nbsp;&nbsp;
+    <a href="https://docs.google.com/spreadsheets/d/1jUTHoky9yVm2jb6khIVOFe1LpQZhNzaH-KhgUibQYDA/edit" target="_blank">Google Sheets</a>
+</footer>
+
+<div class="modal-backdrop" id="modal">
+    <div class="modal" role="dialog">
+        <button class="modal-close" id="modal-close">&times;</button>
+        <div class="modal-cover-wrap" id="m-cover-wrap"></div>
+        <div class="modal-body">
+            <div class="modal-num" id="m-num"></div>
+            <div class="modal-title" id="m-title"></div>
+            <div class="modal-author" id="m-author"></div>
+            <div class="modal-avg-row">
+                <span class="modal-avg-num" id="m-avg-num"></span>
+                <span class="modal-avg-of">/ 10</span>
+                <span class="modal-avg-unit" id="m-avg-unit"></span>
+            </div>
+            <div class="modal-members-label">Bewertungen der Mitglieder</div>
+            <div id="m-members"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let allBooks = [];
+    let currentSort = 'num-desc';
+    const debugLines = [];
+
+    // ── CSV Parser ──
+    function parseCSVLine(line) {
+        const result = [];
+        let cell = '', inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            if (inQuotes) {
+                if (ch === '"') {
+                    if (line[i + 1] === '"') { cell += '"'; i++; }
+                    else { inQuotes = false; }
+                } else { cell += ch; }
+            } else if (ch === '"') {
+                inQuotes = true;
+            } else if (ch === ',') {
+                result.push(cell.trim()); cell = '';
+            } else {
+                cell += ch;
             }
-            result.push(cell.trim());
-            return result;
         }
+        result.push(cell.trim());
+        return result;
+    }
 
-        function parseCSVtext(text) {
-            const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
-            return lines
-                .filter(l => l.trim() !== '')
-                .map(l => parseCSVLine(l));
-        }
+    function parseCSVtext(text) {
+        return text
+            .replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+            .split('\n')
+            .filter(l => l.trim() !== '')
+            .map(l => parseCSVLine(l));
+    }
 
-        // Spalte B: Titel kann Kommas enthalten. Wir wissen, dass:
-        //   Spalte A = Nummer (kein Komma)
-        //   Spalte B = Titel (kann Kommas enthalten, ABER nur wenn in Quotes im CSV!)
-        // Die richtige Lösung: Im Google Sheet den Titel in Anführungszeichen setzen,
-        // wenn er ein Komma enthält. Der Standard-CSV-Export macht das automatisch.
-        // Unser Parser oben behandelt das korrekt.
+    // ── Sheet-Struktur (nach Anpassung) ──
+    // A = Nr
+    // B = Aktuell (x oder leer)
+    // C = Titel
+    // D = Autor
+    // E = Image-URL (bevorzugt)
+    // F = ISBN (Fallback OpenLibrary)
+    // G = Einheit
+    // H = Ø Score
+    // I+ = Mitglied1, Wertung1, Mitglied2, Wertung2, ...
 
-        function buildBooks(rows) {
-            const books = [];
-            if (!rows.length) return books;
-            for (let i = 1; i < rows.length; i++) {
-                const r = rows[i];
-                if (!r || r.length < 2) continue;
-                const num = r[0] ? String(r[0]).trim() : '';
-                const title = r[1] ? String(r[1]).trim() : '';
-                const autor = r[2] ? String(r[2]).trim() : '';
-                const isbn = r[3] ? String(r[3]).trim() : '';
-                const unit = r[4] ? String(r[4]).trim() : '';
-                const avgRaw = r[5] ? String(r[5]).trim() : '';
+    function buildBooks(rows) {
+        const books = [];
+        if (!rows.length) return books;
+        for (let i = 1; i < rows.length; i++) {
+            const r = rows[i];
+            if (!r || r.length < 3) continue;
 
-                if (!title) continue;
+            const num       = r[0] ? String(r[0]).trim() : '';
+            const isCurrent = r[1] ? String(r[1]).trim() !== '' : false;
+            const title     = r[2] ? String(r[2]).trim() : '';
+            const autor     = r[3] ? String(r[3]).trim() : '';
+            const imageUrl  = r[4] ? String(r[4]).trim() : '';
+            const isbn      = r[5] ? String(r[5]).trim() : '';
+            const unit      = r[6] ? String(r[6]).trim() : '';
+            const avgRaw    = r[7] ? String(r[7]).trim() : '';
 
-                const members = [];
-                for (let c = 6; c < r.length; c += 2) {
-                    const rawName = r[c];
-                    const rawScore = r[c + 1];
-                    if (rawName == null || rawScore == null) continue;
-                    const name = String(rawName).trim();
-                    const score = parseFloat(String(rawScore).replace(',', '.'));
-                    if (name && !isNaN(score)) {
-                        members.push({ name, score });
-                    }
-                }
+            if (!title) continue;
 
-                let avg = null;
-                if (avgRaw) {
-                    const parsed = parseFloat(avgRaw.replace(',', '.'));
-                    if (!isNaN(parsed)) avg = parsed;
-                }
-                if (avg === null && members.length) {
-                    avg = Math.round(members.reduce((s, m) => s + m.score, 0) / members.length * 10) / 10;
-                }
-
-                books.push({
-                    num: parseInt(num) || i,
-                    numStr: num || i.toString(),
-                    title,
-                    autor,
-                    isbn: isbn || '0',
-                    unit,
-                    members,
-                    avg
-                });
+            const members = [];
+            for (let c = 8; c < r.length; c += 2) {
+                const rawName  = r[c];
+                const rawScore = r[c + 1];
+                if (rawName == null || rawScore == null) continue;
+                const name  = String(rawName).trim();
+                const score = parseFloat(String(rawScore).replace(',', '.'));
+                if (name && !isNaN(score)) members.push({ name, score });
             }
-            return books;
-        }
 
-        function coverUrl(isbn) {
-            if (!isbn || isbn === '0' || isbn === null) return null;
-            return `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false`;
-        }
-
-        function scoreColor(v) {
-            if (v === null) return 'var(--muted)';
-            if (v >= 9) return '#00F0FF';
-            if (v >= 7) return '#BD00FF';
-            if (v >= 5) return '#FF007A';
-            return '#7A7290';
-        }
-
-        function sortBooks(books, mode) {
-            const b = [...books];
-            if (mode === 'num-asc') return b.sort((a, z) => a.num - z.num);
-            if (mode === 'num-desc') return b.sort((a, z) => z.num - a.num);
-            if (mode === 'score-desc') return b.sort((a, z) => (z.avg ?? -1) - (a.avg ?? -1));
-            if (mode === 'score-asc') return b.sort((a, z) => (a.avg ?? 11) - (z.avg ?? 11));
-            return b;
-        }
-
-        function renderAll(books, sortMode) {
-            document.getElementById('stats-bar').style.display = 'flex';
-            document.getElementById('stat-books').textContent = books.length;
-            const rated = books.filter(b => b.avg !== null);
-            if (rated.length) {
-                const overall = Math.round(rated.reduce((s, b) => s + b.avg, 0) / rated.length * 10) / 10;
-                document.getElementById('stat-avg').textContent = overall.toFixed(1);
-                document.getElementById('stat-top').textContent = Math.max(...rated.map(b => b.avg)).toFixed(1);
+            let avg = null;
+            if (avgRaw) {
+                const parsed = parseFloat(avgRaw.replace(',', '.'));
+                if (!isNaN(parsed)) avg = parsed;
             }
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('book-area').style.display = 'block';
-            renderTable(sortBooks(books, sortMode));
-        }
+            if (avg === null && members.length) {
+                avg = Math.round(members.reduce((s, m) => s + m.score, 0) / members.length * 10) / 10;
+            }
 
-        function renderTable(books) {
-            const wrap = document.getElementById('table-wrap');
-            const table = document.createElement('table');
-            table.className = 'book-table';
-            table.innerHTML = `
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th style="width:44px;"></th>
-                        <th>Titel / Autor</th>
-                        <th class="hide-mobile">ISBN</th>
-                        <th class="hide-mobile"></th>
-                        <th style="text-align:right;">Score</th>
-                    </tr>
-                </thead>
-            `;
-            const tbody = document.createElement('tbody');
-            books.forEach(book => {
-                const tr = document.createElement('tr');
-                tr.style.cursor = 'pointer';
-                tr.addEventListener('click', () => openModal(book));
-                const avgD = book.avg !== null ? book.avg.toFixed(1) : '';
-                const pct = book.avg !== null ? Math.round(book.avg / 10 * 100) : 0;
-                const url = coverUrl(book.isbn);
-                const color = scoreColor(book.avg);
-
-                // Cover-Zelle: nur Cover wenn vorhanden, sonst Placeholder
-                const td = document.createElement('td');
-                td.className = 'td-cover';
-                if (url) {
-                    const img = document.createElement('img');
-                    img.className = 'cover-thumb';
-                    img.alt = book.title;
-                    img.src = url;
-                    // Wenn Cover nicht lädt → zeige Placeholder
-                    img.onerror = function() {
-                        this.style.display = 'none';
-                        const ph = document.createElement('div');
-                        ph.className = 'cover-placeholder';
-                        ph.textContent = '📖';
-                        td.appendChild(ph);
-                    };
-                    td.appendChild(img);
-                } else {
-                    const ph = document.createElement('div');
-                    ph.className = 'cover-placeholder';
-                    ph.textContent = '📖';
-                    td.appendChild(ph);
-                }
-
-                tr.innerHTML = `
-                    <td class="td-num">${String(book.num).padStart(2, '0')}</td>
-                    <td class="td-title">
-                        <span class="book-title">${book.title}</span>
-                        ${book.autor ? `<span class="book-author">${book.autor}</span>` : ''}
-                    </td>
-                    <td class="td-isbn">${book.isbn !== '0' ? book.isbn : ''}</td>
-                    <td class="td-bar">
-                        <div class="rating-bar-bg">
-                            <div class="rating-bar-fill" style="width:${pct}%"></div>
-                        </div>
-                    </td>
-                    <td class="td-rating">
-                        <span class="rating-score-wrap">
-                            <span class="rating-score" style="color:${color}">${avgD}</span><span class="rating-denom">${avgD ? '/10' : ''}</span>
-                        </span>
-                        ${book.unit ? `<span class="rating-unit">${book.unit}</span>` : ''}
-                    </td>
-                `;
-                // Cover-TD manuell einfügen an Stelle 2
-                tr.insertBefore(td, tr.children[1]);
-                tbody.appendChild(tr);
+            books.push({
+                num: parseInt(num) || i,
+                numStr: num || String(i),
+                isCurrent,
+                title,
+                autor,
+                imageUrl,
+                isbn: isbn || '0',
+                unit,
+                members,
+                avg
             });
-            table.appendChild(tbody);
-            wrap.innerHTML = '';
-            wrap.appendChild(table);
         }
+        return books;
+    }
 
-        function openModal(book) {
-            const url = coverUrl(book.isbn);
-            const cw = document.getElementById('m-cover-wrap');
+    // ── Cover URL: manuelle URL bevorzugt, sonst OpenLibrary ──
+    function coverUrl(book) {
+        if (book.imageUrl) return book.imageUrl;
+        if (book.isbn && book.isbn !== '0') {
+            return `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg?default=false`;
+        }
+        return null;
+    }
+
+    function scoreColor(v) {
+        if (v === null) return 'var(--muted)';
+        if (v >= 9) return '#00F0FF';
+        if (v >= 7) return '#BD00FF';
+        if (v >= 5) return '#FF007A';
+        return '#7A7290';
+    }
+
+    function sortBooks(books, mode) {
+        const b = [...books];
+        if (mode === 'num-asc')   return b.sort((a, z) => a.num - z.num);
+        if (mode === 'num-desc')  return b.sort((a, z) => z.num - a.num);
+        if (mode === 'score-desc') return b.sort((a, z) => (z.avg ?? -1) - (a.avg ?? -1));
+        if (mode === 'score-asc') return b.sort((a, z) => (a.avg ?? 11) - (z.avg ?? 11));
+        return b;
+    }
+
+    // ── Now Reading Hero ──
+    function renderNowReading(books) {
+        const current = books.find(b => b.isCurrent);
+        if (!current) return;
+
+        const section = document.getElementById('now-reading');
+        section.style.display = 'flex';
+
+        document.getElementById('now-title').textContent  = current.title;
+        document.getElementById('now-author').textContent = current.autor;
+        document.getElementById('now-num').textContent    = `Buch ${String(current.num).padStart(2, '0')}`;
+
+        const wrap = document.getElementById('now-cover-wrap');
+        const url  = coverUrl(current);
+        if (url) {
+            const img = document.createElement('img');
+            img.alt  = current.title;
+            img.src  = url;
+            img.onerror = () => { wrap.innerHTML = '<div class="now-cover-placeholder">📖</div>'; };
+            wrap.innerHTML = '';
+            wrap.appendChild(img);
+        }
+    }
+
+    // ── Stats ──
+    function renderStats(books) {
+        document.getElementById('stats-bar').style.display = 'flex';
+        document.getElementById('stat-books').textContent = books.length;
+        const rated = books.filter(b => b.avg !== null);
+        if (rated.length) {
+            const overall = Math.round(rated.reduce((s, b) => s + b.avg, 0) / rated.length * 10) / 10;
+            document.getElementById('stat-avg').textContent = overall.toFixed(1);
+            document.getElementById('stat-top').textContent = Math.max(...rated.map(b => b.avg)).toFixed(1);
+        }
+    }
+
+    function renderAll(books, sortMode) {
+        renderNowReading(books);
+        renderStats(books);
+        document.getElementById('loading').style.display  = 'none';
+        document.getElementById('book-area').style.display = 'block';
+        renderTable(sortBooks(books, sortMode));
+    }
+
+    // ── Table ──
+    function renderTable(books) {
+        const wrap  = document.getElementById('table-wrap');
+        const table = document.createElement('table');
+        table.className = 'book-table';
+        table.innerHTML = `
+            <thead>
+                <tr>
+                    <th></th>
+                    <th style="width:44px;"></th>
+                    <th>Titel / Autor</th>
+                    <th class="hide-mobile">ISBN</th>
+                    <th class="hide-mobile"></th>
+                    <th style="text-align:right;">Score</th>
+                </tr>
+            </thead>`;
+        const tbody = document.createElement('tbody');
+
+        books.forEach(book => {
+            const tr    = document.createElement('tr');
+            tr.addEventListener('click', () => openModal(book));
+            const avgD  = book.avg !== null ? book.avg.toFixed(1) : '';
+            const pct   = book.avg !== null ? Math.round(book.avg / 10 * 100) : 0;
+            const color = scoreColor(book.avg);
+            const url   = coverUrl(book);
+
+            // Cover TD
+            const tdCover = document.createElement('td');
+            tdCover.className = 'td-cover';
             if (url) {
                 const img = document.createElement('img');
-                img.className = 'modal-cover-img';
+                img.className = 'cover-thumb';
                 img.alt = book.title;
                 img.src = url;
                 img.onerror = function() {
-                    cw.innerHTML = `<div class="modal-cover-placeholder">📖</div>`;
-                    cw.insertAdjacentHTML('beforeend', '<div class="modal-cover-gradient"></div>');
+                    this.style.display = 'none';
+                    const ph = document.createElement('div');
+                    ph.className = 'cover-placeholder';
+                    ph.textContent = '📖';
+                    tdCover.appendChild(ph);
                 };
-                cw.innerHTML = '';
-                cw.appendChild(img);
-                cw.insertAdjacentHTML('beforeend', '<div class="modal-cover-gradient"></div>');
+                tdCover.appendChild(img);
             } else {
-                cw.innerHTML = `<div class="modal-cover-placeholder">📖</div><div class="modal-cover-gradient"></div>`;
+                const ph = document.createElement('div');
+                ph.className = 'cover-placeholder';
+                ph.textContent = '📖';
+                tdCover.appendChild(ph);
             }
 
-            document.getElementById('m-num').textContent = `Buch ${String(book.num).padStart(2, '0')}`;
-            document.getElementById('m-title').textContent = book.title;
-            document.getElementById('m-author').textContent = book.autor;
-            document.getElementById('m-avg-num').textContent = book.avg !== null ? book.avg.toFixed(1) : '';
-            document.getElementById('m-avg-num').style.color = scoreColor(book.avg);
-            document.getElementById('m-avg-unit').textContent = book.unit;
+            tr.innerHTML = `
+                <td class="td-num">${String(book.num).padStart(2, '0')}</td>
+                <td class="td-title">
+                    <span class="book-title">${book.title}</span>
+                    ${book.autor ? `<span class="book-author">${book.autor}</span>` : ''}
+                </td>
+                <td class="td-isbn">${book.isbn !== '0' ? book.isbn : ''}</td>
+                <td class="td-bar">
+                    <div class="rating-bar-bg">
+                        <div class="rating-bar-fill" style="width:${pct}%"></div>
+                    </div>
+                </td>
+                <td class="td-rating">
+                    <span class="rating-score-wrap">
+                        <span class="rating-score" style="color:${color}">${avgD}</span><span class="rating-denom">${avgD ? '/10' : ''}</span>
+                    </span>
+                    ${book.unit ? `<span class="rating-unit">${book.unit}</span>` : ''}
+                </td>`;
 
-            const mem = document.getElementById('m-members');
-            if (!book.members.length) {
-                mem.innerHTML = '<p style="color:var(--muted);font-size:.85rem;font-style:italic;">Noch keine Bewertungen</p>';
-            } else {
-                mem.innerHTML = book.members.map(m => {
-                    const initials = m.name.slice(0, 2).toUpperCase();
-                    const pct = Math.round(m.score / 10 * 100);
-                    return `
-                        <div class="member-row">
-                            <div class="member-avatar">${initials}</div>
-                            <span class="member-name">${m.name}</span>
-                            <div class="member-bar-bg">
-                                <div class="member-bar-fill" style="width:${pct}%"></div>
-                            </div>
-                            <span class="member-score" style="color:${scoreColor(m.score)}">${m.score.toFixed(1)}</span>
-                        </div>
-                    `;
-                }).join('');
-            }
-
-            document.getElementById('modal').classList.add('open');
-            document.body.style.overflow = 'hidden';
-            document.getElementById('modal-close').addEventListener('click', closeModal);
-            document.getElementById('modal').addEventListener('click', e => {
-                if (e.target === document.getElementById('modal')) closeModal();
-            });
-            document.addEventListener('keydown', e => {
-                if (e.key === 'Escape') closeModal();
-            });
-        }
-
-        function closeModal() {
-            document.getElementById('modal').classList.remove('open');
-            document.body.style.overflow = '';
-        }
-
-        function debug(msg) {
-            console.log('Buchclub:', msg);
-            debugLines.push(msg);
-            const box = document.getElementById('debug-box');
-            box.style.display = 'block';
-            box.innerHTML = debugLines.map(l => `<div>${l}</div>`).join('');
-        }
-
-        function hideDebug() {
-            document.getElementById('debug-box').style.display = 'none';
-        }
-
-        document.querySelectorAll('.sort-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentSort = btn.dataset.sort;
-                if (allBooks.length) renderTable(sortBooks(allBooks, currentSort));
-            });
+            tr.insertBefore(tdCover, tr.children[1]);
+            tbody.appendChild(tr);
         });
 
-        async function fetchCSV() {
-            try {
-                const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmVkfS9NOAQ-BV4uA3XJUHW6hOS5LT5cFUr6DsESars2b7tg1SsMCVUHnyzKaEh4qnhXUqDiHXUl30/pub?gid=0&single=true&output=csv';
-                debug('CSV laden von: ' + csvUrl);
-                const response = await fetch(csvUrl);
-                if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                const text = await response.text();
-                const raw = parseCSVtext(text);
-                debug(`CSV geladen: ${raw.length} Zeilen`);
-                if (raw.length > 1) {
-                    debug('Header: ' + JSON.stringify(raw[0]));
-                    debug('Zeile 2: ' + JSON.stringify(raw[1]));
-                }
-                const books = buildBooks(raw);
-                debug(`Geparsed: ${books.length} Bücher`);
-                if (books.length > 0) {
-                    debug('Buch 1 members: ' + JSON.stringify(books[0].members));
-                    debug('Buch 1 avg: ' + books[0].avg);
-                }
-                allBooks = books;
-                if (allBooks.length === 0) throw new Error('Keine Bücher gefunden. Header-Zeile prüfen.');
-                renderAll(allBooks, currentSort);
-                hideDebug();
-            } catch (err) {
-                debug('FEHLER: ' + err.message);
-                document.getElementById('loading').innerHTML = `Fehler beim Laden: ${err.message}<br><small>Überprüfe die CSV-URL und Sheet-Struktur.</small>`;
-            }
+        table.appendChild(tbody);
+        wrap.innerHTML = '';
+        wrap.appendChild(table);
+    }
+
+    // ── Modal ──
+    function openModal(book) {
+        const url = coverUrl(book);
+        const cw  = document.getElementById('m-cover-wrap');
+
+        if (url) {
+            const img = document.createElement('img');
+            img.className = 'modal-cover-img';
+            img.alt = book.title;
+            img.src = url;
+            img.onerror = () => {
+                cw.innerHTML = '<div class="modal-cover-placeholder">📖</div><div class="modal-cover-gradient"></div>';
+            };
+            cw.innerHTML = '';
+            cw.appendChild(img);
+            cw.insertAdjacentHTML('beforeend', '<div class="modal-cover-gradient"></div>');
+        } else {
+            cw.innerHTML = '<div class="modal-cover-placeholder">📖</div><div class="modal-cover-gradient"></div>';
         }
 
-        window.addEventListener('load', fetchCSV);
-    </script>
+        document.getElementById('m-num').textContent    = `Buch ${String(book.num).padStart(2, '0')}`;
+        document.getElementById('m-title').textContent  = book.title;
+        document.getElementById('m-author').textContent = book.autor;
+        const avgEl = document.getElementById('m-avg-num');
+        avgEl.textContent  = book.avg !== null ? book.avg.toFixed(1) : '';
+        avgEl.style.color  = scoreColor(book.avg);
+        document.getElementById('m-avg-unit').textContent = book.unit;
+
+        const mem = document.getElementById('m-members');
+        if (!book.members.length) {
+            mem.innerHTML = '<p style="color:var(--muted);font-size:.85rem;font-style:italic;">Noch keine Bewertungen</p>';
+        } else {
+            mem.innerHTML = book.members.map(m => {
+                const initials = m.name.slice(0, 2).toUpperCase();
+                const pct = Math.round(m.score / 10 * 100);
+                return `
+                    <div class="member-row">
+                        <div class="member-avatar">${initials}</div>
+                        <span class="member-name">${m.name}</span>
+                        <div class="member-bar-bg">
+                            <div class="member-bar-fill" style="width:${pct}%"></div>
+                        </div>
+                        <span class="member-score" style="color:${scoreColor(m.score)}">${m.score.toFixed(1)}</span>
+                    </div>`;
+            }).join('');
+        }
+
+        document.getElementById('modal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        const closeBtn = document.getElementById('modal-close');
+        const backdrop = document.getElementById('modal');
+        const onKey    = e => { if (e.key === 'Escape') closeModal(); };
+
+        closeBtn.onclick  = closeModal;
+        backdrop.onclick  = e => { if (e.target === backdrop) closeModal(); };
+        document.addEventListener('keydown', onKey);
+
+        // cleanup listener on close
+        backdrop._removeKey = () => document.removeEventListener('keydown', onKey);
+    }
+
+    function closeModal() {
+        const backdrop = document.getElementById('modal');
+        backdrop.classList.remove('open');
+        document.body.style.overflow = '';
+        if (backdrop._removeKey) { backdrop._removeKey(); backdrop._removeKey = null; }
+    }
+
+    // ── Debug ──
+    function debug(msg) {
+        console.log('Buchclub:', msg);
+        debugLines.push(msg);
+        const box = document.getElementById('debug-box');
+        box.style.display = 'block';
+        box.innerHTML = debugLines.map(l => `<div>${l}</div>`).join('');
+    }
+    function hideDebug() { document.getElementById('debug-box').style.display = 'none'; }
+
+    // ── Sort buttons ──
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentSort = btn.dataset.sort;
+            if (allBooks.length) renderTable(sortBooks(allBooks, currentSort));
+        });
+    });
+
+    // ── Fetch ──
+    async function fetchCSV() {
+        try {
+            const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSmVkfS9NOAQ-BV4uA3XJUHW6hOS5LT5cFUr6DsESars2b7tg1SsMCVUHnyzKaEh4qnhXUqDiHXUl30/pub?gid=0&single=true&output=csv';
+            debug('CSV laden von: ' + csvUrl);
+            const response = await fetch(csvUrl);
+            if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            const text = await response.text();
+            const raw  = parseCSVtext(text);
+            debug(`CSV geladen: ${raw.length} Zeilen`);
+            if (raw.length > 1) {
+                debug('Header: ' + JSON.stringify(raw[0]));
+                debug('Zeile 2: ' + JSON.stringify(raw[1]));
+            }
+            const books = buildBooks(raw);
+            debug(`Geparsed: ${books.length} Bücher`);
+            allBooks = books;
+            if (!allBooks.length) throw new Error('Keine Bücher gefunden. Header-Zeile prüfen.');
+            renderAll(allBooks, currentSort);
+            hideDebug();
+        } catch (err) {
+            debug('FEHLER: ' + err.message);
+            document.getElementById('loading').innerHTML =
+                `Fehler beim Laden: ${err.message}<br><small>Überprüfe die CSV-URL und Sheet-Struktur.</small>`;
+        }
+    }
+
+    window.addEventListener('load', fetchCSV);
+</script>
 </body>
 </html>
